@@ -13,6 +13,7 @@
         --card: #ffffff;
         --card-2: #FDF6EA;
         --line: #EBDFCB;
+        --line-soft: #F1E7D3;
         --text: #26332F;
         --muted: #66766C;
         --pink: #FF7A66;
@@ -23,50 +24,87 @@
         --purple: #0E7C86;
         --teal: #159A8C;
         --teal-deep: #0E7A6E;
+        --teal-tint: rgba(21,154,140,0.10);
         --coral: #FF7A66;
+        --coral-deep: #C7432E;
         --accent-grad: linear-gradient(90deg, #159A8C, #FF7A66);
-        --radius: 16px;
-        --shadow: 0 1px 4px rgba(112, 84, 40, 0.07);
+        --radius: 18px;
+        --radius-sm: 12px;
+        --shadow: 0 1px 2px rgba(112, 84, 40, 0.05), 0 4px 14px rgba(112, 84, 40, 0.06);
+        --shadow-lg: 0 2px 4px rgba(112, 84, 40, 0.05), 0 14px 34px rgba(112, 84, 40, 0.10);
+        --ease: cubic-bezier(0.22, 0.9, 0.32, 1);
       }
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
-        background: var(--bg);
+        background:
+          radial-gradient(720px 340px at 12% -80px, rgba(21,154,140,0.07), transparent 70%),
+          radial-gradient(680px 320px at 92% -60px, rgba(255,122,102,0.08), transparent 70%),
+          var(--bg);
         color: var(--text);
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         line-height: 1.55;
         -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
       }
-      h1, h2, h3 { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
+      h1, h2, h3 { margin: 0; letter-spacing: -0.01em; }
       button, input, select, textarea { font: inherit; color: inherit; }
       button, [role="button"], select, summary, input:not([type="checkbox"]) { min-height: 2.25rem; }
-      :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+      :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+      ::selection { background: rgba(255,122,102,0.28); }
 
       .rainbow-bar { height: 6px; background: var(--accent-grad); }
 
       .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 72px; }
 
-      header.hero { padding: 34px 0 8px; }
+      /* ---------- Hero ---------- */
+      header.hero { padding: 30px 0 4px; }
+      .hero-card {
+        background: linear-gradient(135deg, #ffffff 0%, #FFFAF0 52%, #FFF2E2 100%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: var(--shadow-lg);
+        padding: 30px 32px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--accent-grad); }
       .hero .term {
         display: inline-block;
-        font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
-        color: var(--muted);
-        border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
-        background: var(--bg-soft);
+        font-size: 0.76rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase;
+        color: var(--teal-deep);
+        border: 1px solid rgba(21,154,140,0.35); border-radius: 999px; padding: 5px 12px;
+        background: var(--teal-tint);
       }
       .hero h1 {
-        font-size: clamp(2.1rem, 6vw, 3.2rem);
-        font-weight: 800; line-height: 1.08; margin: 16px 0 10px;
+        font-size: clamp(1.95rem, 5.2vw, 2.9rem);
+        font-weight: 800; line-height: 1.12; margin: 14px 0 6px;
       }
       .hero h1 .grad { color: var(--coral); }
-      .hero p { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0; }
+      .hero .date-line { color: var(--muted); font-weight: 600; margin: 0 0 16px; }
+      .glance { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 7px;
+        background: #ffffff; border: 1px solid var(--line); border-radius: 999px;
+        padding: 6px 13px 6px 10px; font-size: 0.88rem; font-weight: 700;
+        box-shadow: 0 1px 3px rgba(112,84,40,0.06);
+      }
+      .chip svg { flex: none; }
+      .chip strong { font-weight: 800; }
+      .hero-art { width: 218px; max-width: 38vw; height: auto; flex: none; }
+      .hero-note { color: var(--muted); font-size: 0.92rem; margin: 14px 2px 0; max-width: 640px; }
 
+      /* ---------- Nav ---------- */
       nav.tabs {
-        position: sticky; top: 0; z-index: 20;
+        position: sticky; top: 0; z-index: 30;
         background: color-mix(in srgb, var(--bg) 88%, transparent);
-        backdrop-filter: blur(8px);
-        padding: 14px 0 12px; margin-top: 22px;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        padding: 14px 0 12px; margin-top: 20px;
         display: flex; flex-wrap: wrap; gap: 8px;
       }
       nav.tabs a {
@@ -75,192 +113,346 @@
         padding: 8px 14px; border-radius: 999px;
         font-weight: 700; font-size: 0.9rem;
         display: inline-flex; align-items: center; min-height: 2.25rem;
+        transition: border-color 0.18s var(--ease), transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
       }
-      nav.tabs a:hover { border-color: var(--purple); }
+      nav.tabs a:hover { border-color: var(--teal); transform: translateY(-1px); box-shadow: var(--shadow); }
       nav.tabs a .dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex: none; }
 
-      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 26px; }
+      /* ---------- Stats ---------- */
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
       .stat {
         background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-        padding: 16px; position: relative; overflow: hidden; box-shadow: var(--shadow);
+        padding: 16px 18px; position: relative; overflow: hidden; box-shadow: var(--shadow);
       }
       .stat::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--pink)); }
-      .stat .num { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1.1; margin-top: 4px; }
+      .stat .num { font-size: 1.9rem; font-weight: 800; line-height: 1.1; margin-top: 4px; font-variant-numeric: tabular-nums; }
       .stat .lbl { color: var(--muted); font-size: 0.85rem; font-weight: 700; }
 
-      section.block { margin-top: 44px; scroll-margin-top: 84px; }
-      .block-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
-      .block-head h2 { font-size: 1.45rem; font-weight: 700; }
-      .block-head .swatch { width: 26px; height: 6px; border-radius: 3px; background: var(--accent); align-self: center; }
-      .block-sub { color: var(--muted); margin: 0 0 18px; max-width: 620px; }
+      /* ---------- Sections & cards ---------- */
+      section.block { margin-top: 46px; scroll-margin-top: 86px; }
+      .block-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+      .block-head h2 { font-size: 1.45rem; font-weight: 800; }
+      .block-head .swatch { width: 26px; height: 6px; border-radius: 3px; background: var(--accent); flex: none; }
+      .block-sub { color: var(--muted); margin: 0 0 18px; max-width: 640px; }
 
-      .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+      .card {
+        background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 22px; box-shadow: var(--shadow);
+      }
       .card + .card { margin-top: 14px; }
 
-      /* Today */
+      .empty-state { text-align: center; padding: 18px 12px 10px; }
+      .empty-state svg { display: block; margin: 0 auto 10px; }
+      .empty-state p { color: var(--muted); margin: 0 auto; max-width: 420px; }
+      .empty-state p strong { color: var(--text); display: block; font-size: 1rem; margin-bottom: 2px; }
+      .empty-note { color: var(--muted); margin: 0; }
+
+      /* ---------- Today ---------- */
       .today-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
       .today-item {
         display: flex; gap: 14px; align-items: center;
-        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+        background: var(--card-2); border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 12px 16px;
+        transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
       }
-      .today-item .time { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
-      .today-item .subj { font-weight: 800; }
+      .today-item:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+      .today-item .time { font-weight: 700; font-size: 0.95rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .today-item .subj { font-weight: 800; overflow-wrap: anywhere; }
       .today-item .room { color: var(--muted); font-size: 0.88rem; }
       .today-item .bar { width: 5px; align-self: stretch; border-radius: 3px; background: var(--accent); flex: none; }
-      .empty-note { color: var(--muted); margin: 0; }
 
-      /* Timetable */
+      /* ---------- Timetable ---------- */
       .tt-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
       .tt-day { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; min-height: 120px; box-shadow: var(--shadow); }
-      .tt-day.today { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal) inset; }
-      .tt-day h3 { font-size: 0.95rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-      .tt-day h3 .tag { font-size: 0.68rem; background: var(--teal); color: #ffffff; border-radius: 999px; padding: 2px 8px; font-weight: 800; letter-spacing: 0.04em; }
-      .tt-class { margin-top: 10px; background: var(--card-2); border-radius: 10px; padding: 9px 11px; font-size: 0.86rem; position: relative; }
-      .tt-class .t { color: var(--muted); font-size: 0.78rem; font-weight: 700; }
-      .tt-class .s { font-weight: 800; line-height: 1.3; }
-      .tt-class .r { color: var(--muted); font-size: 0.8rem; }
-      .tt-class .del { position: absolute; top: 4px; right: 4px; }
+      .tt-day.today { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal) inset, var(--shadow); background: linear-gradient(180deg, rgba(21,154,140,0.05), #ffffff 55%); }
+      .tt-day h3 { font-size: 0.95rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+      .tt-day h3 .tag { font-size: 0.66rem; background: var(--teal); color: #ffffff; border-radius: 999px; padding: 2px 8px; font-weight: 800; letter-spacing: 0.05em; }
+      .tt-class { margin-top: 10px; background: var(--card-2); border: 1px solid var(--line-soft); border-radius: 10px; padding: 9px 28px 9px 11px; font-size: 0.86rem; position: relative; }
+      .tt-class .t { color: var(--muted); font-size: 0.78rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+      .tt-class .s { font-weight: 800; line-height: 1.3; overflow-wrap: anywhere; }
+      .tt-class .r { color: var(--muted); font-size: 0.8rem; overflow-wrap: anywhere; }
+      .tt-class .del { position: absolute; top: 2px; right: 2px; }
       .tt-none { color: var(--muted); font-size: 0.85rem; margin-top: 10px; }
 
-      /* Forms */
+      /* ---------- Forms & buttons ---------- */
       form.add { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
       form.add input, form.add select {
         background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px;
         padding: 8px 12px; min-height: 2.5rem;
+        transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), background 0.15s var(--ease);
       }
-      form.add input { flex: 1 1 160px; }
+      form.add input:hover, form.add select:hover { border-color: #DCCBA6; }
+      form.add input:focus, form.add select:focus {
+        outline: none; border-color: var(--teal); background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(21,154,140,0.16);
+      }
+      form.add input { flex: 1 1 160px; min-width: 0; }
       form.add input[type="date"], form.add input[type="time"] { flex: 0 1 auto; }
       form.add select { flex: 0 1 auto; }
       .btn {
-        background: var(--teal); color: #ffffff; border: none; cursor: pointer;
+        background: linear-gradient(135deg, #17A794, var(--teal-deep)); color: #ffffff; border: none; cursor: pointer;
         font-weight: 800; border-radius: 10px; padding: 8px 18px; min-height: 2.5rem;
+        box-shadow: 0 2px 8px rgba(14,122,110,0.28);
+        transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease), filter 0.15s var(--ease);
       }
-      .btn:hover { filter: brightness(1.08); }
+      .btn:hover { filter: brightness(1.07); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(14,122,110,0.32); }
+      .btn:active { transform: translateY(0) scale(0.98); }
+      .btn-coral { background: linear-gradient(135deg, #FF8A75, #F25F45); box-shadow: 0 2px 8px rgba(242,95,69,0.30); }
+      .btn-coral:hover { box-shadow: 0 4px 12px rgba(242,95,69,0.34); }
       .btn-ghost {
         background: transparent; border: 1px solid var(--line); color: var(--text);
         border-radius: 10px; padding: 8px 16px; cursor: pointer; font-weight: 700; min-height: 2.5rem;
+        transition: border-color 0.15s var(--ease), background 0.15s var(--ease), transform 0.15s var(--ease);
       }
-      .btn-ghost:hover { border-color: var(--purple); }
+      .btn-ghost:hover { border-color: var(--teal); background: var(--teal-tint); }
+      .btn-ghost:active { transform: scale(0.98); }
       .del {
         background: none; border: none; color: var(--muted); cursor: pointer;
-        width: 2.25rem; height: 2.25rem; border-radius: 8px; font-size: 1rem; line-height: 1;
+        width: 2.25rem; height: 2.25rem; min-height: 2.25rem; border-radius: 8px; font-size: 0.95rem; line-height: 1;
         display: inline-flex; align-items: center; justify-content: center; flex: none;
+        transition: color 0.15s var(--ease), background 0.15s var(--ease);
       }
-      .del:hover { color: var(--pink); background: rgba(255,122,102,0.14); }
+      .del:hover { color: var(--coral-deep); background: rgba(255,122,102,0.14); }
 
-      /* Assignments */
+      /* ---------- Assignments ---------- */
       .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
       .filters button {
         background: var(--card-2); border: 1px solid var(--line); color: var(--text);
         border-radius: 999px; padding: 6px 14px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
+        transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
       }
+      .filters button:hover { border-color: var(--teal); }
       .filters button[aria-pressed="true"] { background: var(--text); color: #FFFBF4; border-color: var(--text); }
+      .task-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+      .task-progress .bar-track { flex: 1; height: 9px; background: var(--line-soft); border-radius: 5px; overflow: hidden; }
+      .task-progress .bar-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--teal), var(--green)); transition: width 0.55s var(--ease); }
+      .task-progress .bar-lbl { font-size: 0.86rem; font-weight: 700; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
       .task-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
       .task {
         display: flex; align-items: center; gap: 12px;
-        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 10px 16px;
+        background: var(--card-2); border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 10px 12px 10px 16px;
+        transition: background 0.25s var(--ease), border-color 0.25s var(--ease), opacity 0.25s var(--ease);
       }
-      .task label { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; min-height: 2.25rem; min-width: 0; }
-      .task input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--green); flex: none; cursor: pointer; }
+      .task label { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; min-height: 2.25rem; min-width: 0; position: relative; }
+      .task input[type="checkbox"] {
+        -webkit-appearance: none; appearance: none;
+        width: 26px; height: 26px; border-radius: 9px; flex: none;
+        border: 2px solid #D9C9A8; background-color: #ffffff;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4.5 12.5 L10 18 L19.5 6.5' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: center; background-size: 0 0;
+        margin: 0; cursor: pointer;
+        transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), background-size 0.26s var(--ease);
+      }
+      .task input[type="checkbox"]:checked { background-color: var(--green); border-color: var(--green); background-size: 15px 15px; }
+      .task label:hover input[type="checkbox"] { border-color: var(--green); }
       .task .main { min-width: 0; }
-      .task .title { font-weight: 800; }
+      .task .title { font-weight: 800; overflow-wrap: anywhere; transition: color 0.25s var(--ease); }
+      .task.done { background: rgba(47,163,107,0.07); }
       .task.done .title { text-decoration: line-through; color: var(--muted); }
       .task .meta { color: var(--muted); font-size: 0.85rem; }
       .pill { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
-      .pill.high { background: rgba(255,122,102,0.18); color: #C7432E; }
+      .pill.high { background: rgba(255,122,102,0.18); color: var(--coral-deep); }
       .pill.med { background: rgba(233,169,59,0.22); color: #8F6210; }
-      .pill.low { background: rgba(21,154,140,0.14); color: #0E7A6E; }
+      .pill.low { background: rgba(21,154,140,0.14); color: var(--teal-deep); }
       .pill.overdue { background: var(--coral); color: #ffffff; }
+      @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.28); } 100% { transform: scale(1); } }
+      .task input[type="checkbox"].pop { animation: pop 0.34s var(--ease); }
 
-      /* Exams */
+      /* ---------- Exams ---------- */
       .exam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-      .exam { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+      .exam {
+        background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 18px; position: relative; overflow: hidden; box-shadow: var(--shadow);
+        transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+      }
+      .exam:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
       .exam::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
-      .exam .days { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 2rem; font-weight: 700; line-height: 1; margin: 6px 0 2px; }
+      .exam .days { font-size: 2rem; font-weight: 800; line-height: 1.05; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
       .exam .days small { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
-      .exam .subj { font-weight: 800; font-size: 1.05rem; }
+      .exam .subj { font-weight: 800; font-size: 1.05rem; padding-right: 30px; overflow-wrap: anywhere; }
       .exam .when { color: var(--muted); font-size: 0.88rem; }
+      .exam .soon { display: inline-block; margin-top: 8px; font-size: 0.76rem; font-weight: 800; color: var(--coral-deep); background: rgba(255,122,102,0.14); border-radius: 999px; padding: 3px 9px; }
       .exam .del { position: absolute; top: 8px; right: 8px; }
 
-      /* Timer */
-      .timer-wrap { display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: center; }
-      .ring-box { position: relative; width: 220px; height: 220px; margin: 0 auto; }
-      .ring-box svg { transform: rotate(-90deg); display: block; }
-      .ring-bg { stroke: var(--line); }
-      .ring-fg { stroke: url(#ringGrad); stroke-linecap: round; transition: stroke-dashoffset 0.4s linear; }
-      .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-      .ring-center .clock { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 2.6rem; font-weight: 700; line-height: 1; }
-      .ring-center .state { color: var(--muted); font-weight: 800; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
-      .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+      /* ---------- Timer ---------- */
+      .timer-card { background: linear-gradient(180deg, #ffffff, #FFFBF2); }
+      .timer-wrap { display: grid; grid-template-columns: 300px 1fr; gap: 34px; align-items: center; }
+      .ring-box { position: relative; width: 272px; height: 272px; margin: 0 auto; }
+      .ring-box svg.ring-svg { transform: rotate(-90deg); display: block; }
+      .ring-bg { stroke: #F0E5CE; }
+      .ring-fg { stroke: url(#ringGrad); stroke-linecap: round; }
+      .ring-box::after {
+        content: ""; position: absolute; inset: 22px; border-radius: 50%;
+        background: radial-gradient(circle at 50% 38%, rgba(21,154,140,0.07), transparent 68%);
+        pointer-events: none;
+      }
+      .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; }
+      .ring-center .clock { font-size: 3.3rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+      .ring-center .state { color: var(--muted); font-weight: 800; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 8px; }
+      @keyframes ringPulse { 0% { transform: scale(1); } 35% { transform: scale(1.035); } 100% { transform: scale(1); } }
+      .ring-box.celebrate { animation: ringPulse 0.7s var(--ease) 2; }
+      .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
       .presets button {
         background: var(--card-2); border: 1px solid var(--line); color: var(--text);
         border-radius: 10px; padding: 8px 16px; cursor: pointer; font-weight: 800;
+        transition: border-color 0.15s var(--ease), background 0.15s var(--ease), transform 0.15s var(--ease);
       }
-      .presets button[aria-pressed="true"] { border-color: var(--blue); background: rgba(21,154,140,0.12); }
+      .presets button:hover { border-color: var(--teal); transform: translateY(-1px); }
+      .presets button[aria-pressed="true"] { border-color: var(--teal); background: var(--teal-tint); color: var(--teal-deep); }
       .timer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+      .timer-actions .btn { padding: 10px 22px; font-size: 1rem; }
+      .timer-msg {
+        margin-top: 18px; background: rgba(47,163,107,0.10); border: 1px solid rgba(47,163,107,0.35);
+        border-radius: var(--radius-sm); padding: 14px 16px; display: none;
+      }
+      .timer-msg.show { display: block; }
+      .timer-msg strong { display: block; font-size: 1.02rem; margin-bottom: 2px; }
+      .timer-msg p { margin: 0; color: var(--muted); }
       .sessions { color: var(--muted); margin-top: 16px; }
       .sessions strong { color: var(--text); }
 
-      /* Grades */
-      .gpa-banner { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
-      .gpa-banner .gpa { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 2.6rem; font-weight: 800; line-height: 1; }
+      /* ---------- Grades ---------- */
+      .gpa-banner { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+      .gpa-ring { position: relative; width: 96px; height: 96px; flex: none; }
+      .gpa-ring svg { transform: rotate(-90deg); display: block; }
+      .gpa-ring .gpa-num {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        font-size: 1.45rem; font-weight: 800; font-variant-numeric: tabular-nums;
+      }
       .gpa-banner .gpa-lbl { color: var(--muted); font-weight: 700; }
+      .gpa-banner .gpa-note { max-width: 440px; }
       .grade-rows { display: grid; gap: 10px; }
       .grade-row {
-        display: flex; align-items: center; gap: 12px;
-        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 10px 16px;
+        display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        background: var(--card-2); border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 10px 12px 10px 16px;
       }
-      .grade-row .subj { font-weight: 800; flex: 1; min-width: 0; }
+      .grade-row .subj { font-weight: 800; flex: 1 1 140px; min-width: 0; overflow-wrap: anywhere; }
       .grade-row .cr { color: var(--muted); font-size: 0.88rem; white-space: nowrap; }
       .grade-badge {
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 1.05rem;
+        font-weight: 800; font-size: 1.05rem;
         width: 46px; height: 46px; border-radius: 12px; flex: none;
         display: inline-flex; align-items: center; justify-content: center;
         background: rgba(21,154,140,0.13); color: var(--teal-deep);
       }
+      .grade-badge.top { background: rgba(47,163,107,0.16); color: #1E7A46; }
 
-      /* Reading */
+      /* ---------- Reading ---------- */
       .book-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
       .book {
         display: flex; align-items: center; gap: 14px;
-        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 12px 12px 16px;
+        background: var(--card-2); border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 12px 12px 12px 16px;
       }
       .book .info { flex: 1; min-width: 0; }
-      .book .t { font-weight: 800; }
-      .book .a { color: var(--muted); font-size: 0.88rem; }
-      .book .prog { height: 8px; background: var(--line); border-radius: 4px; margin-top: 8px; overflow: hidden; }
-      .book .prog i { display: block; height: 100%; background: var(--teal); border-radius: 4px; }
-      .book .pct { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 600; white-space: nowrap; }
-      .book .prog { cursor: pointer; }
-      .book .pct { cursor: pointer; background: none; border: 1px solid transparent; border-radius: 8px; padding: 4px 6px; color: inherit; }
+      .book .t { font-weight: 800; overflow-wrap: anywhere; }
+      .book .a { color: var(--muted); font-size: 0.88rem; overflow-wrap: anywhere; }
+      .book .prog { height: 9px; background: #EFE3CB; border-radius: 5px; margin-top: 9px; overflow: hidden; cursor: pointer; }
+      .book .prog i {
+        display: block; height: 100%; border-radius: 5px;
+        background: linear-gradient(90deg, var(--teal), #3DBFA9);
+        transition: width 0.5s var(--ease);
+      }
+      .book.finished .prog i { background: linear-gradient(90deg, var(--green), #57C184); }
+      .book .pct {
+        font-weight: 700; white-space: nowrap; cursor: pointer; font-variant-numeric: tabular-nums;
+        background: none; border: 1px solid transparent; border-radius: 8px; padding: 4px 6px; color: inherit;
+      }
       .book .pct:hover { border-color: var(--line); }
       .book .pct-input { width: 64px; background: var(--bg-soft); border: 1px solid var(--blue); border-radius: 8px; padding: 4px 6px; font-weight: 700; text-align: center; }
       .prog-controls { display: inline-flex; gap: 6px; align-items: center; flex: none; }
-      .prog-btn { background: var(--card); border: 1px solid var(--line); color: var(--text); width: 2.25rem; height: 2.25rem; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 1.05rem; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
-      .prog-btn:hover { border-color: var(--purple); }
+      .prog-btn {
+        background: var(--card); border: 1px solid var(--line); color: var(--text);
+        width: 2.25rem; height: 2.25rem; min-height: 2.25rem; border-radius: 8px; cursor: pointer;
+        font-weight: 800; font-size: 1.05rem; line-height: 1;
+        display: inline-flex; align-items: center; justify-content: center;
+        transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+      }
+      .prog-btn:hover { border-color: var(--teal); background: var(--teal-tint); }
       .prog-btn:disabled { opacity: 0.35; cursor: default; }
-      .book .done-tag { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--green); }
+      .prog-btn:disabled:hover { border-color: var(--line); background: var(--card); }
+      .book .done-tag {
+        font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+        color: #1E7A46; background: rgba(47,163,107,0.14); border-radius: 999px;
+        padding: 2px 8px; margin-left: 8px; white-space: nowrap; vertical-align: 2px;
+      }
 
-      footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; text-align: center; }
+      footer { margin-top: 60px; color: var(--muted); font-size: 0.9rem; text-align: center; }
       footer .rainbow-bar { height: 4px; border-radius: 2px; margin-bottom: 18px; }
 
+      /* ---------- Toast & confetti ---------- */
+      .toast {
+        position: fixed; left: 50%; bottom: 24px; z-index: 80;
+        transform: translate(-50%, 18px); opacity: 0; pointer-events: none;
+        background: var(--text); color: #FFFBF4; border-radius: 999px;
+        padding: 11px 20px 11px 15px; font-weight: 700; font-size: 0.95rem;
+        display: flex; align-items: center; gap: 9px;
+        box-shadow: 0 10px 28px rgba(38,51,47,0.28);
+        transition: transform 0.32s var(--ease), opacity 0.32s var(--ease);
+        max-width: calc(100vw - 32px); text-align: center;
+      }
+      .toast.show { transform: translate(-50%, 0); opacity: 1; }
+      .toast svg { flex: none; }
+      .confetti-bit { position: fixed; z-index: 90; pointer-events: none; border-radius: 2px; }
+
+      /* ---------- Wins ---------- */
+      .wins-card { margin-top: 14px; background: linear-gradient(180deg, #ffffff, #FFFBF1); }
+      .wins-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+      .wins-head h3 { font-size: 1.15rem; font-weight: 800; }
+      .wins-sub { color: var(--muted); margin: 0 0 14px; max-width: 560px; }
+      .wins-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      .win-row {
+        display: flex; align-items: center; gap: 12px;
+        background: #FFF8E7; border: 1px solid #F0DFB4; border-radius: var(--radius-sm); padding: 10px 12px 10px 14px;
+      }
+      .win-row .star {
+        width: 34px; height: 34px; border-radius: 50%; flex: none;
+        background: linear-gradient(135deg, #F2BC4C, var(--yellow)); color: #ffffff;
+        display: inline-flex; align-items: center; justify-content: center;
+        box-shadow: 0 2px 6px rgba(233,169,59,0.35);
+      }
+      .win-row .w-main { flex: 1; min-width: 0; }
+      .win-row .w-text { font-weight: 800; overflow-wrap: anywhere; }
+      .win-row .w-date { color: var(--muted); font-size: 0.83rem; }
+      @keyframes winIn { 0% { transform: scale(0.96); background: #FCEFC9; } 100% { transform: scale(1); } }
+      .win-row.new { animation: winIn 0.45s var(--ease); }
+
+      /* ---------- Hero entrance ---------- */
+      @media (prefers-reduced-motion: no-preference) {
+        .hero-card { animation: heroIn 0.6s var(--ease) both; }
+        @keyframes heroIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 900px) {
+        .timer-wrap { grid-template-columns: 1fr; gap: 22px; }
+        .timer-side { text-align: center; }
+        .timer-side .presets, .timer-side .timer-actions { justify-content: center; }
+        .timer-msg { text-align: left; }
+      }
       @media (max-width: 860px) {
         .stats { grid-template-columns: repeat(2, 1fr); }
         .tt-grid { grid-template-columns: 1fr 1fr; }
         .exam-grid { grid-template-columns: 1fr 1fr; }
-        .timer-wrap { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 640px) {
+        .hero-card { grid-template-columns: 1fr; padding: 24px 20px; }
+        .hero-art { width: 168px; margin: 0 auto; }
+        .hero-note { margin-top: 12px; }
       }
       @media (max-width: 560px) {
         .tt-grid, .exam-grid { grid-template-columns: 1fr; }
         .wrap { padding: 0 14px 56px; }
         .card { padding: 16px; }
-        .hero h1 { font-size: 2rem; }
+        .hero h1 { font-size: 1.85rem; }
         .book { flex-wrap: wrap; }
         .book .info { flex: 1 1 100%; }
+        .ring-box { width: 236px; height: 236px; }
+        .ring-box svg.ring-svg { width: 236px; height: 236px; }
+        .ring-center .clock { font-size: 2.7rem; }
+        form.add input, form.add select { flex: 1 1 100%; }
+        form.add .btn { flex: 1 1 100%; }
       }
       @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
-        .ring-fg { transition: none; }
+        *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
       }
     </style>
   </head>
@@ -269,9 +461,51 @@
     <div class="wrap">
 
       <header class="hero">
-        <span class="term">Fall 2026 · Semester Planner</span>
-        <h1>Student <span class="grad">Planner</span></h1>
-        <p>Classes, assignments, exams, study sessions and grades — everything for the semester in one place. Demo data for Alex is loaded so you can see how it works; delete anything and make it yours.</p>
+        <div class="hero-card">
+          <div>
+            <span class="term">Fall 2026 · Semester Planner</span>
+            <h1 id="greeting">Hello, Alex</h1>
+            <p class="date-line" id="dateLine"></p>
+            <div class="glance" id="glance" aria-label="Today at a glance"></div>
+          </div>
+          <svg class="hero-art" viewBox="0 0 240 190" role="img" aria-label="A cosy study desk with books, a plant, a clock and a warm mug">
+            <ellipse cx="120" cy="172" rx="98" ry="9" fill="#F3E7CE"/>
+            <!-- wall clock -->
+            <circle cx="196" cy="38" r="19" fill="#FFFFFF" stroke="#EBDFCB" stroke-width="3"/>
+            <circle cx="196" cy="38" r="14.5" fill="#FFF6E9"/>
+            <path d="M196 38 L196 29 M196 38 L203 42" stroke="#0E7A6E" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="196" cy="38" r="2.2" fill="#FF7A66"/>
+            <!-- hanging plant -->
+            <path d="M42 0 L42 16" stroke="#D9C9A8" stroke-width="3" stroke-linecap="round"/>
+            <path d="M28 16 h28 l-4 15 h-20 z" fill="#FF7A66"/>
+            <path d="M42 14 C34 4 24 6 22 2 C30 0 38 4 42 10 C46 2 56 -1 62 2 C59 8 50 10 42 14 Z" fill="#2FA36B"/>
+            <!-- desk -->
+            <rect x="18" y="128" width="204" height="9" rx="4" fill="#E9A93B"/>
+            <rect x="30" y="137" width="8" height="30" rx="3" fill="#D99A2B"/>
+            <rect x="202" y="137" width="8" height="30" rx="3" fill="#D99A2B"/>
+            <!-- book stack -->
+            <rect x="34" y="112" width="56" height="16" rx="4" fill="#159A8C"/>
+            <rect x="40" y="97" width="48" height="15" rx="4" fill="#FF7A66"/>
+            <rect x="46" y="83" width="40" height="14" rx="4" fill="#E9A93B"/>
+            <rect x="52" y="88" width="16" height="4" rx="2" fill="#FFF3D6"/>
+            <!-- open book -->
+            <path d="M104 128 v-20 c10 -6 22 -6 30 0 v20 c-8 -6 -20 -6 -30 0 Z" fill="#FFFFFF" stroke="#EBDFCB" stroke-width="2.5"/>
+            <path d="M134 128 v-20 c10 -6 22 -6 30 0 v20 c-8 -6 -20 -6 -30 0 Z" fill="#FFF6E9" stroke="#EBDFCB" stroke-width="2.5"/>
+            <path d="M119 108 v16 M111 112 h9 M111 118 h9 M142 112 h9 M142 118 h9" stroke="#D9C9A8" stroke-width="2.4" stroke-linecap="round"/>
+            <!-- pencil cup -->
+            <path d="M176 128 l-3 -24 h20 l-3 24 z" fill="#0E7C86"/>
+            <path d="M180 104 l-4 -16 l5 -2 l4 16 z" fill="#E9A93B"/>
+            <path d="M188 102 l3 -15 l5 1 l-3 15 z" fill="#FF7A66"/>
+            <!-- mug with steam -->
+            <path d="M96 128 v-13 h17 v13 z" fill="#FF9E7D"/>
+            <path d="M113 118 c7 -1 7 8 0 8" fill="none" stroke="#FF9E7D" stroke-width="3.4"/>
+            <path d="M100 108 c-2 -3 2 -4 0 -7 M107 108 c-2 -3 2 -4 0 -7" stroke="#BFDCD5" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <!-- small plant on desk -->
+            <path d="M52 128 v-9 h16 v9 z" fill="#0E7A6E"/>
+            <path d="M60 119 c-6 -2 -8 -8 -7 -12 5 0 8 4 8 8 0 -5 3 -9 8 -10 1 5 -2 11 -9 14 Z" fill="#2FA36B"/>
+          </svg>
+        </div>
+        <p class="hero-note">Everything for the semester in one calm place — classes, assignments, exams, study sessions and grades. Demo data for Alex is loaded so you can see how it works; delete anything and make it yours.</p>
       </header>
 
       <nav class="tabs" aria-label="Planner sections">
@@ -281,7 +515,7 @@
         <a href="#exams"><span class="dot" style="background:var(--purple)"></span>Exams</a>
         <a href="#timer"><span class="dot" style="background:var(--blue)"></span>Study Timer</a>
         <a href="#grades"><span class="dot" style="background:var(--green)"></span>Grades</a>
-        <a href="#reading"><span class="dot" style="background:var(--pink)"></span>Reading List</a>
+        <a href="#reading"><span class="dot" style="background:var(--pink)"></span>Reading &amp; Wins</a>
       </nav>
 
       <div class="stats" role="group" aria-label="Semester at a glance">
@@ -294,17 +528,24 @@
       <!-- TODAY -->
       <section class="block" id="today" style="--accent:var(--yellow)">
         <div class="block-head"><span class="swatch"></span><h2>Today</h2></div>
-        <p class="block-sub" id="todaySub">Your classes for today.</p>
+        <p class="block-sub" id="todaySub">Your classes for today, in order — so you always know where to be next.</p>
         <div class="card">
           <ul class="today-list" id="todayList"></ul>
-          <p class="empty-note" id="todayEmpty" hidden>No classes scheduled today. A good day to get ahead on assignments.</p>
+          <div class="empty-state" id="todayEmpty" hidden>
+            <svg width="72" height="60" viewBox="0 0 72 60" aria-hidden="true">
+              <path d="M22 56 v-12 h28 v12 z" fill="#FF7A66"/>
+              <path d="M36 44 c-9 -3 -12 -12 -11 -19 8 1 12 7 12 13 0 -8 5 -14 13 -16 2 8 -3 17 -14 22 Z" fill="#2FA36B"/>
+              <ellipse cx="36" cy="58" rx="24" ry="2.4" fill="#F3E7CE"/>
+            </svg>
+            <p><strong>No classes today</strong>A clear day — perfect for getting ahead on assignments, or simply recharging.</p>
+          </div>
         </div>
       </section>
 
       <!-- TIMETABLE -->
       <section class="block" id="timetable" style="--accent:var(--pink)">
         <div class="block-head"><span class="swatch"></span><h2>Class Timetable</h2></div>
-        <p class="block-sub">Your weekly schedule, Monday to Friday. Add a class with the form under the grid.</p>
+        <p class="block-sub">Your whole week at a glance, Monday to Friday. Add a class with the form under the grid — today is highlighted so it is easy to spot.</p>
         <div class="tt-grid" id="ttGrid"></div>
         <form class="add card" id="classForm" style="margin-top:14px">
           <select id="cfDay" aria-label="Day">
@@ -312,8 +553,8 @@
             <option value="3">Thursday</option><option value="4">Friday</option>
           </select>
           <input type="time" id="cfTime" value="09:00" aria-label="Start time" required />
-          <input type="text" id="cfSubject" placeholder="Subject (e.g. Biology)" aria-label="Subject" required />
-          <input type="text" id="cfRoom" placeholder="Room (e.g. Lab 2)" aria-label="Room" />
+          <input type="text" id="cfSubject" placeholder="Subject (e.g. Biology)" aria-label="Subject" maxlength="60" required />
+          <input type="text" id="cfRoom" placeholder="Room (e.g. Lab 2)" aria-label="Room" maxlength="40" />
           <button class="btn" type="submit">Add class</button>
         </form>
       </section>
@@ -321,18 +562,30 @@
       <!-- ASSIGNMENTS -->
       <section class="block" id="assignments" style="--accent:var(--orange)">
         <div class="block-head"><span class="swatch"></span><h2>Assignments</h2></div>
-        <p class="block-sub">Everything you need to hand in, sorted by due date. Tick one off when it is submitted.</p>
+        <p class="block-sub">Everything you need to hand in, sorted by due date. Tick one off when it is submitted — that part feels good.</p>
         <div class="card">
           <div class="filters" role="group" aria-label="Filter assignments">
             <button type="button" data-filter="all" aria-pressed="true">All</button>
             <button type="button" data-filter="todo" aria-pressed="false">To do</button>
             <button type="button" data-filter="done" aria-pressed="false">Done</button>
           </div>
+          <div class="task-progress" id="taskProgress">
+            <div class="bar-track"><div class="bar-fill" id="taskBarFill" style="width:0%"></div></div>
+            <span class="bar-lbl" id="taskBarLbl"></span>
+          </div>
           <ul class="task-list" id="taskList"></ul>
-          <p class="empty-note" id="taskEmpty" hidden>Nothing here. Add an assignment below.</p>
+          <div class="empty-state" id="taskEmpty" hidden>
+            <svg width="76" height="60" viewBox="0 0 76 60" aria-hidden="true">
+              <rect x="8" y="42" width="60" height="7" rx="3.5" fill="#E9A93B"/>
+              <rect x="16" y="28" width="34" height="14" rx="4" fill="#159A8C"/>
+              <rect x="21" y="15" width="30" height="13" rx="4" fill="#FF7A66"/>
+              <path d="M52 38 l6 6 l11 -12" stroke="#2FA36B" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p id="taskEmptyText"><strong>Nothing here</strong>Add an assignment below and it will show up here, sorted by due date.</p>
+          </div>
           <form class="add" id="taskForm">
-            <input type="text" id="tfTitle" placeholder="Assignment (e.g. Essay draft)" aria-label="Assignment title" required />
-            <input type="text" id="tfSubject" placeholder="Subject" aria-label="Subject" required />
+            <input type="text" id="tfTitle" placeholder="Assignment (e.g. Essay draft)" aria-label="Assignment title" maxlength="90" required />
+            <input type="text" id="tfSubject" placeholder="Subject" aria-label="Subject" maxlength="40" required />
             <input type="date" id="tfDue" aria-label="Due date" required />
             <select id="tfPriority" aria-label="Priority">
               <option value="high">High priority</option>
@@ -347,12 +600,22 @@
       <!-- EXAMS -->
       <section class="block" id="exams" style="--accent:var(--purple)">
         <div class="block-head"><span class="swatch"></span><h2>Exams</h2></div>
-        <p class="block-sub">Countdown to every exam, so revision can start on time — not the night before.</p>
+        <p class="block-sub">A calm countdown to every exam, so revision can start early and gently — not the night before.</p>
         <div class="exam-grid" id="examGrid"></div>
+        <div class="card empty-state" id="examEmpty" hidden style="margin-top:12px">
+          <svg width="72" height="60" viewBox="0 0 72 60" aria-hidden="true">
+            <circle cx="36" cy="32" r="21" fill="#FFFFFF" stroke="#EBDFCB" stroke-width="3"/>
+            <circle cx="36" cy="32" r="16" fill="#FFF6E9"/>
+            <path d="M36 32 L36 21 M36 32 L44 36" stroke="#0E7A6E" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="36" cy="32" r="2.4" fill="#FF7A66"/>
+            <path d="M28 8 h16 M36 8 v6" stroke="#D9C9A8" stroke-width="3.4" stroke-linecap="round"/>
+          </svg>
+          <p><strong>No exams on the horizon</strong>When an exam is booked, add it here and the countdown starts automatically.</p>
+        </div>
         <form class="add card" id="examForm" style="margin-top:14px">
-          <input type="text" id="efSubject" placeholder="Subject (e.g. Mathematics)" aria-label="Subject" required />
+          <input type="text" id="efSubject" placeholder="Subject (e.g. Mathematics)" aria-label="Subject" maxlength="60" required />
           <input type="date" id="efDate" aria-label="Exam date" required />
-          <input type="text" id="efRoom" placeholder="Room / hall (optional)" aria-label="Room" />
+          <input type="text" id="efRoom" placeholder="Room / hall (optional)" aria-label="Room" maxlength="40" />
           <button class="btn" type="submit">Add exam</button>
         </form>
       </section>
@@ -360,11 +623,11 @@
       <!-- STUDY TIMER -->
       <section class="block" id="timer" style="--accent:var(--blue)">
         <div class="block-head"><span class="swatch"></span><h2>Study Timer</h2></div>
-        <p class="block-sub">Pick a session length, press start, and study until the ring runs out. Short, regular sessions beat one long cram.</p>
-        <div class="card">
+        <p class="block-sub">Pick a session length, press start, and just focus on one thing until the ring runs out. Short, regular sessions beat one long cram — every single time.</p>
+        <div class="card timer-card">
           <div class="timer-wrap">
-            <div class="ring-box">
-              <svg width="220" height="220" viewBox="0 0 220 220" aria-hidden="true">
+            <div class="ring-box" id="ringBox">
+              <svg class="ring-svg" width="272" height="272" viewBox="0 0 272 272" aria-hidden="true">
                 <defs>
                   <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#159A8C" /><stop offset="25%" stop-color="#2FAE9E" />
@@ -372,15 +635,15 @@
                     <stop offset="88%" stop-color="#FF8F7A" /><stop offset="100%" stop-color="#FF7A66" />
                   </linearGradient>
                 </defs>
-                <circle class="ring-bg" cx="110" cy="110" r="98" fill="none" stroke-width="12" />
-                <circle class="ring-fg" id="ringFg" cx="110" cy="110" r="98" fill="none" stroke-width="12" />
+                <circle class="ring-bg" cx="136" cy="136" r="122" fill="none" stroke-width="13" />
+                <circle class="ring-fg" id="ringFg" cx="136" cy="136" r="122" fill="none" stroke-width="13" />
               </svg>
               <div class="ring-center">
                 <div class="clock" id="clock">25:00</div>
-                <div class="state" id="timerState">Ready</div>
+                <div class="state" id="timerState" role="status">Ready when you are</div>
               </div>
             </div>
-            <div>
+            <div class="timer-side">
               <div class="presets" role="group" aria-label="Session length">
                 <button type="button" data-mins="15" aria-pressed="false">15 min</button>
                 <button type="button" data-mins="25" aria-pressed="true">25 min</button>
@@ -391,6 +654,10 @@
                 <button class="btn" type="button" id="timerToggle">Start study session</button>
                 <button class="btn-ghost" type="button" id="timerReset">Reset</button>
               </div>
+              <div class="timer-msg" id="timerMsg" role="status">
+                <strong id="timerMsgTitle">Session complete — lovely work!</strong>
+                <p id="timerMsgText">You showed up and focused. Take a short break, stretch, and have some water before the next round.</p>
+              </div>
               <p class="sessions">Sessions completed this visit: <strong id="sessionCount">0</strong></p>
             </div>
           </div>
@@ -400,19 +667,38 @@
       <!-- GRADES -->
       <section class="block" id="grades" style="--accent:var(--green)">
         <div class="block-head"><span class="swatch"></span><h2>Grades Tracker</h2></div>
-        <p class="block-sub">Your grade in each subject, with your GPA worked out automatically on a 4.0 scale.</p>
+        <p class="block-sub">Your grade in each subject, with your GPA worked out for you on a 4.0 scale. Watching the ring fill up is half the fun.</p>
         <div class="card">
           <div class="gpa-banner">
-            <div>
-              <div class="gpa" id="gpaBig">–</div>
-              <div class="gpa-lbl">Grade Point Average</div>
+            <div class="gpa-ring" aria-hidden="true">
+              <svg width="96" height="96" viewBox="0 0 96 96">
+                <defs>
+                  <linearGradient id="gpaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#159A8C" /><stop offset="100%" stop-color="#2FA36B" />
+                  </linearGradient>
+                </defs>
+                <circle cx="48" cy="48" r="42" fill="none" stroke="#F0E5CE" stroke-width="9" />
+                <circle id="gpaRingFg" cx="48" cy="48" r="42" fill="none" stroke="url(#gpaGrad)" stroke-width="9" stroke-linecap="round" />
+              </svg>
+              <div class="gpa-num" id="gpaBig">–</div>
             </div>
-            <p class="empty-note" id="gpaNote" style="max-width:420px"></p>
+            <div>
+              <div class="gpa-lbl">Grade Point Average</div>
+              <p class="empty-note gpa-note" id="gpaNote"></p>
+            </div>
           </div>
           <div class="grade-rows" id="gradeRows"></div>
-          <p class="empty-note" id="gradeEmpty" hidden>No subjects yet. Add your first grade below.</p>
+          <div class="empty-state" id="gradeEmpty" hidden>
+            <svg width="76" height="60" viewBox="0 0 76 60" aria-hidden="true">
+              <rect x="14" y="10" width="48" height="40" rx="7" fill="#FFFFFF" stroke="#EBDFCB" stroke-width="3"/>
+              <path d="M24 24 h28 M24 33 h28 M24 42 h17" stroke="#D9C9A8" stroke-width="3.4" stroke-linecap="round"/>
+              <circle cx="58" cy="44" r="11" fill="#2FA36B"/>
+              <path d="M53 44 l4 4 l7 -8" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p><strong>No subjects yet</strong>Add your first grade below and your GPA appears here automatically.</p>
+          </div>
           <form class="add" id="gradeForm">
-            <input type="text" id="gfSubject" placeholder="Subject (e.g. English)" aria-label="Subject" required />
+            <input type="text" id="gfSubject" placeholder="Subject (e.g. English)" aria-label="Subject" maxlength="60" required />
             <select id="gfGrade" aria-label="Grade">
               <option value="A">A</option><option value="A-">A-</option><option value="B+">B+</option>
               <option value="B" selected>B</option><option value="B-">B-</option><option value="C+">C+</option>
@@ -429,16 +715,45 @@
 
       <!-- READING LIST -->
       <section class="block" id="reading" style="--accent:var(--pink)">
-        <div class="block-head"><span class="swatch"></span><h2>Reading List</h2></div>
-        <p class="block-sub">Set books and extra reading for the semester, with how far through each one you are. Click the progress bar or the % — or use the − / + buttons — to update your progress any time.</p>
+        <div class="block-head"><span class="swatch"></span><h2>Reading List &amp; Wins</h2></div>
+        <p class="block-sub">Set books and extra reading for the semester, with how far through each one you are. Tap the progress bar or the % — or use the − / + buttons — to update it any time. Finishing a book earns a little celebration.</p>
         <div class="card">
           <ul class="book-list" id="bookList"></ul>
-          <p class="empty-note" id="bookEmpty" hidden>Your reading list is empty. Add a book below.</p>
+          <div class="empty-state" id="bookEmpty" hidden>
+            <svg width="80" height="60" viewBox="0 0 80 60" aria-hidden="true">
+              <path d="M10 52 v-30 c9 -5 20 -5 28 0 v30 c-8 -5 -19 -5 -28 0 Z" fill="#FFFFFF" stroke="#EBDFCB" stroke-width="2.6"/>
+              <path d="M70 52 v-30 c-9 -5 -20 -5 -28 0 v30 c8 -5 19 -5 28 0 Z" fill="#FFF6E9" stroke="#EBDFCB" stroke-width="2.6"/>
+              <path d="M40 22 v30" stroke="#EBDFCB" stroke-width="2.6"/>
+              <path d="M62 8 c-4 -4 -4 -6 0 -8 M70 10 c-3 -3 -3 -5 0 -7" stroke="#FF7A66" stroke-width="0" fill="none"/>
+              <path d="M64 4 l1.8 3.6 L70 8.2 l-3 2.8 0.8 4 L64 12.8 60.2 15 61 11 l-3 -2.8 4.2 -0.6 Z" fill="#E9A93B"/>
+            </svg>
+            <p><strong>Your reading list is empty</strong>Add the first book below — a set text, a novel, anything you are working through.</p>
+          </div>
           <form class="add" id="bookForm">
-            <input type="text" id="bfTitle" placeholder="Book title" aria-label="Book title" required />
-            <input type="text" id="bfAuthor" placeholder="Author" aria-label="Author" />
+            <input type="text" id="bfTitle" placeholder="Book title" aria-label="Book title" maxlength="90" required />
+            <input type="text" id="bfAuthor" placeholder="Author" aria-label="Author" maxlength="60" />
             <input type="number" id="bfProgress" min="0" max="100" value="" placeholder="0" aria-label="Percent read" style="flex:0 1 110px" />
             <button class="btn" type="submit">Add book</button>
+          </form>
+        </div>
+
+        <div class="card wins-card">
+          <div class="wins-head">
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5 0.9 -4.7 4.6 1.1 6.5 -5.8 -3.1 -5.8 3.1 1.1 -6.5 -4.7 -4.6 6.5 -0.9 Z" fill="#E9A93B"/></svg>
+            <h3>Wins</h3>
+          </div>
+          <p class="wins-sub">Small victories count — a good quiz score, a finished chapter, a session you actually showed up for. Write them down here; on a hard day, this list is the proof you are doing better than you think.</p>
+          <ul class="wins-list" id="winList"></ul>
+          <div class="empty-state" id="winEmpty" hidden>
+            <svg width="72" height="60" viewBox="0 0 72 60" aria-hidden="true">
+              <path d="M36 6 l5.4 11 12.1 1.8 -8.8 8.5 2.1 12 -10.8 -5.7 -10.8 5.7 2.1 -12 -8.8 -8.5 12.1 -1.8 Z" fill="#F2BC4C"/>
+              <ellipse cx="36" cy="56" rx="24" ry="2.6" fill="#F3E7CE"/>
+            </svg>
+            <p><strong>No wins logged yet</strong>Your first win is waiting — finish something small today and add it below.</p>
+          </div>
+          <form class="add" id="winForm">
+            <input type="text" id="wfText" placeholder="Something that went well (e.g. Finished my revision notes)" aria-label="Your win" maxlength="120" required />
+            <button class="btn btn-coral" type="submit">Add win</button>
           </form>
         </div>
       </section>
@@ -447,6 +762,11 @@
         <div class="rainbow-bar" aria-hidden="true"></div>
         Student Planner · Fall 2026 — plan the week, hand things in on time, and watch the GPA climb.<br />Made by <strong style="color:var(--text)">Pixelora</strong>
       </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 6.2L20 10l-5.9 1.8L12 18l-2.1-6.2L4 10l5.9-1.8Z" fill="#FFB59E"/><circle cx="19.5" cy="18.5" r="2" fill="#7AC7B8"/><circle cx="4.5" cy="19" r="1.6" fill="#E9A93B"/></svg>
+      <span id="toastText"></span>
     </div>
 
     <script>
@@ -470,11 +790,58 @@
         }
         function fmtDate(iso) {
           var d = new Date(iso + "T00:00:00");
+          if (isNaN(d.getTime())) return "";
           return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
         }
         function daysUntil(iso) {
           var a = new Date(todayISO() + "T00:00:00"), b = new Date(iso + "T00:00:00");
           return Math.round((b - a) / 86400000);
+        }
+        var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        /* ---------- Toast & confetti ---------- */
+        var toastTimer = null;
+        function showToast(msg) {
+          $("toastText").textContent = msg;
+          var t = $("toast");
+          t.classList.add("show");
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () { t.classList.remove("show"); }, 3200);
+        }
+        var CONFETTI_COLORS = ["#159A8C", "#2FA36B", "#FF7A66", "#FF9E7D", "#E9A93B", "#7AC7B8"];
+        function confettiAt(x, y, count) {
+          if (reduceMotion) return;
+          count = count || 16;
+          for (var i = 0; i < count; i++) {
+            var bit = document.createElement("span");
+            bit.className = "confetti-bit";
+            var size = 5 + Math.random() * 6;
+            bit.style.width = size + "px";
+            bit.style.height = (Math.random() > 0.5 ? size : size * 0.45) + "px";
+            bit.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+            bit.style.left = x + "px";
+            bit.style.top = y + "px";
+            document.body.appendChild(bit);
+            var angle = Math.random() * Math.PI * 2;
+            var dist = 46 + Math.random() * 84;
+            var dx = Math.cos(angle) * dist;
+            var dy = Math.sin(angle) * dist - 34;
+            var rot = (Math.random() - 0.5) * 560;
+            var anim = bit.animate([
+              { transform: "translate(-50%, -50%) rotate(0deg)", opacity: 1 },
+              { transform: "translate(calc(-50% + " + dx + "px), calc(-50% + " + (dy + 74) + "px)) rotate(" + rot + "deg)", opacity: 0 }
+            ], { duration: 680 + Math.random() * 420, easing: "cubic-bezier(0.17, 0.67, 0.35, 1)" });
+            (function (el, a) {
+              function cleanup() { if (el.parentNode) el.parentNode.removeChild(el); }
+              if (a && a.finished && a.finished.then) a.finished.then(cleanup, cleanup);
+              else setTimeout(cleanup, 1300);
+            })(bit, anim);
+          }
+        }
+        function confettiOn(el, count) {
+          if (!el) return;
+          var r = el.getBoundingClientRect();
+          confettiAt(r.left + r.width / 2, r.top + r.height / 2, count);
         }
 
         /* ---------- Data (persisted in localStorage; demo seeds first run only) ---------- */
@@ -515,6 +882,11 @@
           { title: "Biology: Concepts & Connections", author: "Campbell et al.", progress: 38 },
           { title: "A Brief History of Time", author: "Stephen Hawking", progress: 100 }
         ];
+        var wins = [
+          { text: "Scored 92% on the Biology quiz", date: "2026-11-09" },
+          { text: "Handed in the History handout a day early", date: "2026-11-10" },
+          { text: "Finished a full study session without checking my phone", date: "2026-11-11" }
+        ];
 
         /* ---------- Persistence (localStorage) ---------- */
         var STORAGE_KEY = "pixelora-student-planner-v1";
@@ -523,7 +895,7 @@
         function save() {
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({
-              classes: classes, tasks: tasks, exams: exams, grades: grades, books: books,
+              classes: classes, tasks: tasks, exams: exams, grades: grades, books: books, wins: wins,
               timerMins: (typeof totalSecs === "number" && totalSecs) ? Math.round(totalSecs / 60) : timerMinsPref
             }));
           } catch (e) { /* storage unavailable — planner still works in-memory */ }
@@ -544,6 +916,9 @@
             if (Array.isArray(d.books)) books = d.books.map(function (b) {
               return { title: b.title, author: b.author || "", progress: Math.max(0, Math.min(100, Number(b.progress) || 0)) };
             });
+            if (Array.isArray(d.wins)) wins = d.wins.map(function (w) {
+              return { text: String(w && w.text ? w.text : ""), date: String(w && w.date ? w.date : "") };
+            }).filter(function (w) { return w.text; });
             if ([15, 25, 45, 60].indexOf(Number(d.timerMins)) >= 0) timerMinsPref = Number(d.timerMins);
           } catch (e) { /* corrupted save — fall back to demo seed */ }
         })();
@@ -562,13 +937,42 @@
           $("statGpa").textContent = gpa == null ? "–" : gpa.toFixed(2);
         }
 
+        /* ---------- Header: greeting + today at a glance ---------- */
+        var ICON_BOOK = '<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5 C7 3.8 10 3.8 12 5.5 C14 3.8 17 3.8 20 5.5 V19 C17 17.3 14 17.3 12 19 C10 17.3 7 17.3 4 19 Z" fill="none" stroke="#159A8C" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 5.5 V19" stroke="#159A8C" stroke-width="2.2"/></svg>';
+        var ICON_CHECK = '<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="none" stroke="#FF7A66" stroke-width="2.2"/><path d="M8 12.4 l2.8 2.8 L16.4 9" fill="none" stroke="#FF7A66" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        var ICON_CLOCK = '<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2" fill="none" stroke="#E9A93B" stroke-width="2.2"/><path d="M12 7.5 V12 l3.2 2" fill="none" stroke="#E9A93B" stroke-width="2.4" stroke-linecap="round"/></svg>';
+        function renderHeader() {
+          var now = new Date();
+          var h = now.getHours();
+          var part = h < 5 ? "Up late" : h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+          $("greeting").innerHTML = part + ', <span class="grad">Alex</span>';
+          $("dateLine").textContent = now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" }) + " · Fall 2026";
+          var dayIdx = now.getDay() - 1;
+          var classesToday = (dayIdx >= 0 && dayIdx <= 4) ? classes.filter(function (c) { return c.day === dayIdx; }).length : 0;
+          var todo = tasks.filter(function (t) { return !t.done; }).length;
+          var upcoming = exams.filter(function (e) { return daysUntil(e.date) >= 0; })
+            .sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+          var examChip;
+          if (upcoming.length) {
+            var d = daysUntil(upcoming[0].date);
+            var when = d === 0 ? "today" : d === 1 ? "tomorrow" : "in " + d + " days";
+            examChip = ICON_CLOCK + '<span>Next exam: <strong>' + esc(upcoming[0].subject) + '</strong>&nbsp;' + when + '</span>';
+          } else {
+            examChip = ICON_CLOCK + '<span><strong>No exams</strong>&nbsp;coming up</span>';
+          }
+          $("glance").innerHTML =
+            '<span class="chip">' + ICON_BOOK + '<strong>' + classesToday + '</strong>&nbsp;' + (classesToday === 1 ? "class" : "classes") + ' today</span>' +
+            '<span class="chip">' + ICON_CHECK + '<strong>' + todo + '</strong>&nbsp;' + (todo === 1 ? "assignment" : "assignments") + ' to do</span>' +
+            '<span class="chip">' + examChip + '</span>';
+        }
+
         /* ---------- Today ---------- */
         function renderToday() {
           var now = new Date();
           var dow = now.getDay(); // 0 Sun .. 6 Sat
           var dayIdx = dow - 1; // Mon = 0
           $("todaySub").textContent = now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) +
-            (dayIdx >= 0 && dayIdx <= 4 ? " — here is your schedule." : " — no weekday classes today.");
+            (dayIdx >= 0 && dayIdx <= 4 ? " — here is your schedule, in order. One class at a time." : " — no weekday classes today. A good day to get ahead, gently.");
           var list = $("todayList");
           var todays = (dayIdx >= 0 && dayIdx <= 4) ? classes.filter(function (c) { return c.day === dayIdx; }) : [];
           todays.sort(function (a, b) { return a.time < b.time ? -1 : 1; });
@@ -593,7 +997,7 @@
                 '<div class="s">' + esc(x.c.subject) + '</div>' +
                 (x.c.room ? '<div class="r">' + esc(x.c.room) + '</div>' : '') +
                 '<button class="del" type="button" data-del-class="' + x.i + '" aria-label="Remove ' + esc(x.c.subject) + ' class">✕</button></div>';
-            }).join("") : '<p class="tt-none">No classes</p>';
+            }).join("") : '<p class="tt-none">No classes — a free day.</p>';
             return '<div class="tt-day' + (d === dayIdx ? " today" : "") + '"><h3>' + name +
               (d === dayIdx ? '<span class="tag">TODAY</span>' : "") + '</h3>' + inner + '</div>';
           }).join("");
@@ -602,7 +1006,8 @@
           var btn = e.target.closest("[data-del-class]");
           if (!btn) return;
           classes.splice(Number(btn.getAttribute("data-del-class")), 1);
-          save(); renderTimetable(); renderToday(); renderStats();
+          save(); renderTimetable(); renderToday(); renderStats(); renderHeader();
+          showToast("Class removed.");
         });
         $("classForm").addEventListener("submit", function (e) {
           e.preventDefault();
@@ -610,11 +1015,20 @@
           if (!subject) return;
           classes.push({ day: Number($("cfDay").value), time: $("cfTime").value || "09:00", subject: subject, room: $("cfRoom").value.trim() });
           $("classForm").reset(); $("cfDay").value = "0"; $("cfTime").value = "09:00"; $("cfSubject").value = ""; $("cfRoom").value = "";
-          save(); renderTimetable(); renderToday(); renderStats();
+          save(); renderTimetable(); renderToday(); renderStats(); renderHeader();
+          showToast("Class added — your week is up to date.");
         });
 
         /* ---------- Assignments ---------- */
         var filter = "all";
+        var DONE_MSGS = [
+          "Nice — one down!",
+          "Lovely work — one less thing on your mind.",
+          "Done and dusted. Keep going, Alex.",
+          "That is one more finished. Well done!",
+          "Handed in and off the list — great feeling, right?"
+        ];
+        var doneMsgIdx = 0;
         document.querySelectorAll(".filters button").forEach(function (b) {
           b.addEventListener("click", function () {
             filter = b.getAttribute("data-filter");
@@ -624,7 +1038,18 @@
             renderTasks();
           });
         });
+        function taskEmptyContent() {
+          if (tasks.length === 0) return "<strong>Nothing here yet</strong>Add an assignment below and it will show up here, sorted by due date.";
+          if (filter === "done" && tasks.some(function (t) { return !t.done; }))
+            return "<strong>Nothing ticked off yet</strong>Your finished assignments will collect here. The first tick is the best one.";
+          if (filter === "todo") return "<strong>Everything is done</strong>Every assignment is handed in. Enjoy the clear list, Alex — you earned it.";
+          return "<strong>Nothing here</strong>Try a different filter above.";
+        }
         function renderTasks() {
+          var doneCount = tasks.filter(function (t) { return t.done; }).length;
+          $("taskBarFill").style.width = tasks.length ? (doneCount / tasks.length * 100) + "%" : "0%";
+          $("taskBarLbl").textContent = tasks.length ? doneCount + " of " + tasks.length + " done" : "No assignments yet";
+          $("taskProgress").style.display = tasks.length ? "" : "none";
           var sorted = tasks.map(function (t, i) { return { t: t, i: i }; })
             .sort(function (a, b) { return a.t.due < b.t.due ? -1 : a.t.due > b.t.due ? 1 : 0; });
           var shown = sorted.filter(function (x) {
@@ -635,24 +1060,36 @@
             var pill = overdue ? '<span class="pill overdue">Overdue</span>'
               : '<span class="pill ' + t.priority + '">' + (t.priority === "med" ? "Medium" : t.priority) + '</span>';
             return '<li class="task' + (t.done ? " done" : "") + '">' +
-              '<label><input type="checkbox" data-task="' + x.i + '"' + (t.done ? " checked" : "") + '>' +
+              '<label><input type="checkbox" data-task="' + x.i + '"' + (t.done ? " checked" : "") + ' aria-label="Mark ' + esc(t.title) + ' as done">' +
               '<span class="main"><span class="title">' + esc(t.title) + '</span><br>' +
               '<span class="meta">' + esc(t.subject) + ' · Due ' + fmtDate(t.due) + '</span></span></label>' +
               pill + '<button class="del" type="button" data-del-task="' + x.i + '" aria-label="Delete ' + esc(t.title) + '">✕</button></li>';
           }).join("");
+          $("taskEmptyText").innerHTML = taskEmptyContent();
           $("taskEmpty").hidden = shown.length > 0;
         }
         $("taskList").addEventListener("change", function (e) {
           var cb = e.target.closest("[data-task]");
           if (!cb) return;
-          tasks[Number(cb.getAttribute("data-task"))].done = cb.checked;
-          save(); renderTasks(); renderStats();
+          var idx = Number(cb.getAttribute("data-task"));
+          var wasDone = tasks[idx].done;
+          tasks[idx].done = cb.checked;
+          save();
+          if (cb.checked && !wasDone) {
+            if (!reduceMotion) { cb.classList.remove("pop"); void cb.offsetWidth; cb.classList.add("pop"); }
+            confettiOn(cb, 16);
+            var remaining = tasks.filter(function (t) { return !t.done; }).length;
+            if (remaining === 0 && tasks.length > 0) showToast("Everything is done — amazing work, Alex!");
+            else { showToast(DONE_MSGS[doneMsgIdx % DONE_MSGS.length]); doneMsgIdx++; }
+          }
+          renderTasks(); renderStats(); renderHeader();
         });
         $("taskList").addEventListener("click", function (e) {
           var btn = e.target.closest("[data-del-task]");
           if (!btn) return;
           tasks.splice(Number(btn.getAttribute("data-del-task")), 1);
-          save(); renderTasks(); renderStats();
+          save(); renderTasks(); renderStats(); renderHeader();
+          showToast("Assignment deleted.");
         });
         $("taskForm").addEventListener("submit", function (e) {
           e.preventDefault();
@@ -660,7 +1097,8 @@
           if (!title || !subject || !due) return;
           tasks.push({ title: title, subject: subject, due: due, priority: $("tfPriority").value, done: false });
           $("taskForm").reset(); $("tfTitle").value = ""; $("tfSubject").value = ""; $("tfDue").value = todayISO(); $("tfPriority").value = "med";
-          save(); renderTasks(); renderStats();
+          save(); renderTasks(); renderStats(); renderHeader();
+          showToast("Assignment added — it is on the list.");
         });
 
         /* ---------- Exams ---------- */
@@ -669,20 +1107,24 @@
             .sort(function (a, b) { return a.x.date < b.x.date ? -1 : 1; });
           $("examGrid").innerHTML = sorted.map(function (o) {
             var d = daysUntil(o.x.date);
-            var label = d < 0 ? "Done" : d === 0 ? "Today!" : d === 1 ? "1 <small>day left</small>" : d + " <small>days left</small>";
+            var label = d < 0 ? "Done" : d === 0 ? "Today!" : d === 1 ? "1&nbsp;<small>day left</small>" : d + "&nbsp;<small>days left</small>";
+            var soon = (d >= 0 && d <= 7) ? '<span class="soon">' + (d === 0 ? "Good luck today!" : "Coming up soon — little and often wins") + '</span>' : "";
             return '<div class="exam" style="--accent:' + accentFor(o.x.subject) + '">' +
               '<button class="del" type="button" data-del-exam="' + o.i + '" aria-label="Remove ' + esc(o.x.subject) + ' exam">✕</button>' +
               '<div class="subj">' + esc(o.x.subject) + '</div>' +
               '<div class="days">' + label + '</div>' +
-              '<div class="when">' + fmtDate(o.x.date) + (o.x.room ? ' · ' + esc(o.x.room) : "") + '</div></div>';
-          }).join("") || '<p class="empty-note">No exams added yet.</p>';
+              '<div class="when">' + fmtDate(o.x.date) + (o.x.room ? ' · ' + esc(o.x.room) : "") + '</div>' + soon + '</div>';
+          }).join("");
+          $("examEmpty").hidden = exams.length > 0;
+          $("examGrid").style.display = exams.length ? "" : "none";
           renderStats();
         }
         $("examGrid").addEventListener("click", function (e) {
           var btn = e.target.closest("[data-del-exam]");
           if (!btn) return;
           exams.splice(Number(btn.getAttribute("data-del-exam")), 1);
-          save(); renderExams();
+          save(); renderExams(); renderHeader();
+          showToast("Exam removed.");
         });
         $("examForm").addEventListener("submit", function (e) {
           e.preventDefault();
@@ -690,28 +1132,54 @@
           if (!subject || !date) return;
           exams.push({ subject: subject, date: date, room: $("efRoom").value.trim() });
           $("examForm").reset(); $("efSubject").value = ""; $("efRoom").value = ""; $("efDate").value = todayISO();
-          save(); renderExams();
+          save(); renderExams(); renderHeader();
+          var d = daysUntil(date);
+          showToast(d >= 0 ? "Exam added — " + d + (d === 1 ? " day" : " days") + " to prepare. Plenty of time to start gently." : "Exam added.");
         });
 
-        /* ---------- Study timer ---------- */
-        var CIRC = 2 * Math.PI * 98;
+        /* ---------- Study timer (smooth ring, requestAnimationFrame) ---------- */
+        var RING_R = 122, CIRC = 2 * Math.PI * RING_R;
         var ring = $("ringFg");
         ring.style.strokeDasharray = CIRC;
         ring.style.strokeDashoffset = 0;
-        var totalSecs = timerMinsPref * 60, leftSecs = totalSecs, timerId = null, sessionsDone = 0;
+        var totalSecs = timerMinsPref * 60, leftMs = totalSecs * 1000, rafId = null, endAt = 0, sessionsDone = 0;
         document.querySelectorAll(".presets button").forEach(function (x) { x.setAttribute("aria-pressed", Number(x.getAttribute("data-mins")) === timerMinsPref ? "true" : "false"); });
-        function fmtClock(s) {
+        function fmtClock(ms) {
+          var s = Math.max(0, Math.ceil(ms / 1000));
           return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
         }
         function paintTimer() {
-          $("clock").textContent = fmtClock(leftSecs);
-          ring.style.strokeDashoffset = totalSecs ? CIRC * (1 - leftSecs / totalSecs) : CIRC;
+          $("clock").textContent = fmtClock(leftMs);
+          var frac = totalSecs ? Math.max(0, Math.min(1, leftMs / (totalSecs * 1000))) : 0;
+          ring.style.strokeDashoffset = CIRC * (1 - frac);
         }
         function setState(txt) { $("timerState").textContent = txt; }
-        function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+        function stopTimer() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
         function resetTimer() {
-          stopTimer(); leftSecs = totalSecs; paintTimer(); setState("Ready");
+          stopTimer(); leftMs = totalSecs * 1000; paintTimer(); setState("Ready when you are");
           $("timerToggle").textContent = "Start study session";
+          $("timerMsg").classList.remove("show");
+          $("ringBox").classList.remove("celebrate");
+        }
+        function tick() {
+          leftMs = endAt - performance.now();
+          if (leftMs <= 0) {
+            leftMs = 0; paintTimer(); stopTimer();
+            sessionsDone++; $("sessionCount").textContent = sessionsDone;
+            setState("Session complete");
+            $("timerToggle").textContent = "Start another session";
+            var mins = Math.round(totalSecs / 60);
+            $("timerMsgTitle").textContent = "Session complete — lovely work, Alex!";
+            $("timerMsgText").textContent = "That is " + mins + " minutes of real focus in the bank. Take a short break, stretch, and have some water before the next round.";
+            $("timerMsg").classList.add("show");
+            var rb = $("ringBox");
+            rb.classList.remove("celebrate"); void rb.offsetWidth; rb.classList.add("celebrate");
+            confettiOn(rb.querySelector(".ring-center") || rb, 26);
+            showToast("Study session complete — nicely done!");
+            return;
+          }
+          paintTimer();
+          rafId = requestAnimationFrame(tick);
         }
         document.querySelectorAll(".presets button").forEach(function (b) {
           b.addEventListener("click", function () {
@@ -724,40 +1192,40 @@
           });
         });
         $("timerToggle").addEventListener("click", function () {
-          if (timerId) {
-            stopTimer(); setState("Paused"); $("timerToggle").textContent = "Resume";
+          if (rafId) {
+            leftMs = Math.max(0, endAt - performance.now());
+            stopTimer(); paintTimer(); setState("Paused — no rush");
+            $("timerToggle").textContent = "Resume";
             return;
           }
-          if (leftSecs <= 0) leftSecs = totalSecs;
-          setState("Studying");
+          if (leftMs <= 0) { leftMs = totalSecs * 1000; $("timerMsg").classList.remove("show"); }
+          endAt = performance.now() + leftMs;
+          setState("Focusing — you have got this");
           $("timerToggle").textContent = "Pause";
-          timerId = setInterval(function () {
-            leftSecs--;
-            if (leftSecs <= 0) {
-              leftSecs = 0; paintTimer(); stopTimer();
-              sessionsDone++; $("sessionCount").textContent = sessionsDone;
-              setState("Session complete");
-              $("timerToggle").textContent = "Start another";
-              return;
-            }
-            paintTimer();
-          }, 1000);
+          rafId = requestAnimationFrame(tick);
           paintTimer();
         });
         $("timerReset").addEventListener("click", resetTimer);
         paintTimer();
 
         /* ---------- Grades ---------- */
+        var GPA_CIRC = 2 * Math.PI * 42;
+        var gpaRing = $("gpaRingFg");
+        gpaRing.style.strokeDasharray = GPA_CIRC;
+        gpaRing.style.strokeDashoffset = GPA_CIRC;
+        gpaRing.style.transition = "stroke-dashoffset 0.7s cubic-bezier(0.22, 0.9, 0.32, 1)";
         function renderGrades() {
           var gpa = calcGPA();
           $("gpaBig").textContent = gpa == null ? "–" : gpa.toFixed(2);
-          $("gpaNote").textContent = gpa == null ? "Add a subject to see your GPA."
+          gpaRing.style.strokeDashoffset = gpa == null ? GPA_CIRC : GPA_CIRC * (1 - Math.max(0, Math.min(4, gpa)) / 4);
+          $("gpaNote").textContent = gpa == null ? "Add a subject below and your GPA appears here, worked out for you."
             : gpa >= 3.7 ? "Excellent — honours territory. Keep doing what you are doing."
             : gpa >= 3.0 ? "Solid work. One grade up in any subject moves this noticeably."
             : gpa >= 2.0 ? "Plenty of room to climb — focus revision on your lowest subject first."
             : "Talk to your teachers early and build a revision plan — small steady gains add up.";
           $("gradeRows").innerHTML = grades.map(function (g, i) {
-            return '<div class="grade-row"><span class="grade-badge">' + esc(g.grade) + '</span>' +
+            var top = GRADE_POINTS[g.grade] >= 3.7;
+            return '<div class="grade-row"><span class="grade-badge' + (top ? " top" : "") + '">' + esc(g.grade) + '</span>' +
               '<span class="subj">' + esc(g.subject) + '</span>' +
               '<span class="cr">' + g.credits + (g.credits === 1 ? " credit" : " credits") + ' · ' + GRADE_POINTS[g.grade].toFixed(1) + ' pts</span>' +
               '<button class="del" type="button" data-del-grade="' + i + '" aria-label="Remove ' + esc(g.subject) + '">✕</button></div>';
@@ -770,24 +1238,28 @@
           if (!btn) return;
           grades.splice(Number(btn.getAttribute("data-del-grade")), 1);
           save(); renderGrades();
+          showToast("Subject removed.");
         });
         $("gradeForm").addEventListener("submit", function (e) {
           e.preventDefault();
           var subject = $("gfSubject").value.trim();
           if (!subject) return;
-          grades.push({ subject: subject, grade: normalizeGrade($("gfGrade").value), credits: Number($("gfCredits").value) });
+          var grade = normalizeGrade($("gfGrade").value);
+          grades.push({ subject: subject, grade: grade, credits: Number($("gfCredits").value) });
           $("gradeForm").reset(); $("gfSubject").value = ""; $("gfGrade").value = "B"; $("gfCredits").value = "3";
           save(); renderGrades();
+          showToast(grade === "A" || grade === "A-" ? "An " + grade + " — brilliant, Alex!" : "Grade added — GPA updated.");
         });
 
         /* ---------- Reading list ---------- */
         function renderBooks() {
           $("bookList").innerHTML = books.map(function (b, i) {
             var pct = Math.max(0, Math.min(100, b.progress));
-            return '<li class="book"><div class="info"><span class="t">' + esc(b.title) + '</span>' +
-              (pct >= 100 ? ' <span class="done-tag">Finished</span>' : "") +
+            var finished = pct >= 100;
+            return '<li class="book' + (finished ? " finished" : "") + '"><div class="info"><span class="t">' + esc(b.title) + '</span>' +
+              (finished ? ' <span class="done-tag">Finished</span>' : "") +
               '<div class="a">' + esc(b.author || "—") + '</div>' +
-              '<div class="prog" data-prog-book="' + i + '" role="button" tabindex="0" title="Click to set progress" aria-label="Set progress for ' + esc(b.title) + '"><i style="width:' + pct + '%"></i></div></div>' +
+              '<div class="prog" data-prog-book="' + i + '" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '" aria-label="Reading progress for ' + esc(b.title) + ' — use arrow keys or click to change"><i style="width:' + pct + '%"></i></div></div>' +
               '<span class="prog-controls">' +
               '<button class="prog-btn" type="button" data-dec-book="' + i + '" aria-label="Decrease progress for ' + esc(b.title) + ' by 10 percent"' + (pct <= 0 ? " disabled" : "") + '>-</button>' +
               '<button class="pct" type="button" data-edit-book="' + i + '" title="Click to edit percent read" aria-label="Edit percent read for ' + esc(b.title) + '">' + pct + '%</button>' +
@@ -797,10 +1269,19 @@
           }).join("");
           $("bookEmpty").hidden = books.length > 0;
         }
-        function setBookProgress(i, pct) {
+        function setBookProgress(i, pct, sourceEl) {
           if (!books[i]) return;
-          books[i].progress = Math.max(0, Math.min(100, Math.round(pct) || 0));
+          var was = books[i].progress;
+          var next = Math.max(0, Math.min(100, Math.round(pct) || 0));
+          books[i].progress = next;
           save(); renderBooks();
+          if (next >= 100 && was < 100) {
+            var li = $("bookList").children[i];
+            confettiOn(li || sourceEl, 22);
+            showToast("Finished “" + books[i].title + "” — that is a win, Alex!");
+          } else if (next > was && next >= 50 && was < 50) {
+            showToast("Halfway through “" + books[i].title + "” — nice momentum!");
+          }
         }
         function startEditBookPct(btn, i) {
           if (!books[i] || btn.querySelector("input")) return;
@@ -811,7 +1292,7 @@
           var done = false;
           function commit(saveIt) {
             if (done) return; done = true;
-            if (saveIt) setBookProgress(i, Number(input.value));
+            if (saveIt) setBookProgress(i, Number(input.value), btn);
             else renderBooks();
           }
           input.addEventListener("blur", function () { commit(true); });
@@ -823,16 +1304,16 @@
         }
         $("bookList").addEventListener("click", function (e) {
           var del = e.target.closest("[data-del-book]");
-          if (del) { books.splice(Number(del.getAttribute("data-del-book")), 1); save(); renderBooks(); return; }
+          if (del) { books.splice(Number(del.getAttribute("data-del-book")), 1); save(); renderBooks(); showToast("Book removed."); return; }
           var dec = e.target.closest("[data-dec-book]");
-          if (dec) { var di = Number(dec.getAttribute("data-dec-book")); setBookProgress(di, books[di].progress - 10); return; }
+          if (dec) { var di = Number(dec.getAttribute("data-dec-book")); setBookProgress(di, books[di].progress - 10, dec); return; }
           var inc = e.target.closest("[data-inc-book]");
-          if (inc) { var ii = Number(inc.getAttribute("data-inc-book")); setBookProgress(ii, books[ii].progress + 10); return; }
+          if (inc) { var ii = Number(inc.getAttribute("data-inc-book")); setBookProgress(ii, books[ii].progress + 10, inc); return; }
           var prog = e.target.closest("[data-prog-book]");
           if (prog) {
             var pi = Number(prog.getAttribute("data-prog-book"));
             var rect = prog.getBoundingClientRect();
-            if (rect.width > 0) setBookProgress(pi, (e.clientX - rect.left) / rect.width * 100);
+            if (rect.width > 0) setBookProgress(pi, (e.clientX - rect.left) / rect.width * 100, prog);
             return;
           }
           var pctBtn = e.target.closest("[data-edit-book]");
@@ -842,16 +1323,59 @@
           var prog = e.target.closest("[data-prog-book]");
           if (!prog) return;
           var pi = Number(prog.getAttribute("data-prog-book"));
-          if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); setBookProgress(pi, books[pi].progress + 5); }
-          else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); setBookProgress(pi, books[pi].progress - 5); }
+          if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); setBookProgress(pi, books[pi].progress + 5, prog); }
+          else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); setBookProgress(pi, books[pi].progress - 5, prog); }
+          else if (e.key === "Home") { e.preventDefault(); setBookProgress(pi, 0, prog); }
+          else if (e.key === "End") { e.preventDefault(); setBookProgress(pi, 100, prog); }
         });
         $("bookForm").addEventListener("submit", function (e) {
           e.preventDefault();
           var title = $("bfTitle").value.trim();
           if (!title) return;
-          books.push({ title: title, author: $("bfAuthor").value.trim(), progress: Math.max(0, Math.min(100, Number($("bfProgress").value) || 0)) });
+          var prog = Math.max(0, Math.min(100, Number($("bfProgress").value) || 0));
+          books.push({ title: title, author: $("bfAuthor").value.trim(), progress: prog });
           $("bookForm").reset(); $("bfTitle").value = ""; $("bfAuthor").value = ""; $("bfProgress").value = "";
           save(); renderBooks();
+          if (prog >= 100) showToast("Added — and already finished. Impressive!");
+          else showToast("Book added to your reading list.");
+        });
+
+        /* ---------- Wins ---------- */
+        var WIN_MSGS = [
+          "That's a win — celebrate it!",
+          "Logged and celebrated. Keep them coming, Alex!",
+          "Small wins add up to a big semester.",
+          "Written down and official — nicely done!"
+        ];
+        var winMsgIdx = 0;
+        var STAR_SVG = '<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4l2.6 5.3 5.8 0.8 -4.2 4.1 1 5.8 -5.2 -2.7 -5.2 2.7 1 -5.8 -4.2 -4.1 5.8 -0.8 Z" fill="#FFFFFF"/></svg>';
+        function renderWins(newIdx) {
+          var order = wins.map(function (w, i) { return { w: w, i: i }; }).reverse();
+          $("winList").innerHTML = order.map(function (o) {
+            return '<li class="win-row' + (o.i === newIdx ? " new" : "") + '"><span class="star" aria-hidden="true">' + STAR_SVG + '</span>' +
+              '<span class="w-main"><span class="w-text">' + esc(o.w.text) + '</span><br>' +
+              '<span class="w-date">' + (o.w.date ? fmtDate(o.w.date) : "") + '</span></span>' +
+              '<button class="del" type="button" data-del-win="' + o.i + '" aria-label="Remove win: ' + esc(o.w.text) + '">✕</button></li>';
+          }).join("");
+          $("winEmpty").hidden = wins.length > 0;
+        }
+        $("winList").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-del-win]");
+          if (!btn) return;
+          wins.splice(Number(btn.getAttribute("data-del-win")), 1);
+          save(); renderWins(-1);
+          showToast("Win removed.");
+        });
+        $("winForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var text = $("wfText").value.trim();
+          if (!text) return;
+          wins.push({ text: text, date: todayISO() });
+          $("winForm").reset(); $("wfText").value = "";
+          save(); renderWins(wins.length - 1);
+          var firstRow = $("winList").querySelector(".win-row");
+          confettiOn(firstRow, 24);
+          showToast(WIN_MSGS[winMsgIdx % WIN_MSGS.length]); winMsgIdx++;
         });
 
         $("bfProgress").addEventListener("focus", function () { this.select(); });
@@ -861,7 +1385,7 @@
         $("tfDue").value = todayISO();
         $("efDate").value = todayISO();
 
-        renderToday(); renderTimetable(); renderTasks(); renderExams(); renderGrades(); renderBooks(); renderStats();
+        renderHeader(); renderToday(); renderTimetable(); renderTasks(); renderExams(); renderGrades(); renderBooks(); renderWins(-1); renderStats();
       })();
     </script>
   </body>
