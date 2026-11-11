@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0%25' stop-color='%23159A8C'/%3E%3Cstop offset='25%25' stop-color='%232FAE9E'/%3E%3Cstop offset='50%25' stop-color='%237AC7B8'/%3E%3Cstop offset='70%25' stop-color='%23FFB59E'/%3E%3Cstop offset='88%25' stop-color='%23FF8F7A'/%3E%3Cstop offset='100%25' stop-color='%23FF7A66'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='%23159A8C'/%3E%3Crect y='0' width='100' height='12' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='system-ui,sans-serif' font-weight='800'%3ES%3C/text%3E%3C/svg%3E" />
+    <title>Student Planner — Made by Pixelora</title>
+    <style>
+      :root {
+        --bg: #FFFBF4;
+        --bg-soft: #FFF6E9;
+        --card: #ffffff;
+        --card-2: #FDF6EA;
+        --line: #EBDFCB;
+        --text: #26332F;
+        --muted: #66766C;
+        --pink: #FF7A66;
+        --orange: #FF9E7D;
+        --yellow: #E9A93B;
+        --green: #2FA36B;
+        --blue: #159A8C;
+        --purple: #0E7C86;
+        --teal: #159A8C;
+        --teal-deep: #0E7A6E;
+        --coral: #FF7A66;
+        --accent-grad: linear-gradient(90deg, #159A8C, #FF7A66);
+        --radius: 16px;
+        --shadow: 0 1px 4px rgba(112, 84, 40, 0.07);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1, h2, h3 { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; }
+      button, input, select, textarea { font: inherit; color: inherit; }
+      button, [role="button"], select, summary, input:not([type="checkbox"]) { min-height: 2.25rem; }
+      :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+      .rainbow-bar { height: 6px; background: var(--accent-grad); }
+
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px 72px; }
+
+      header.hero { padding: 34px 0 8px; }
+      .hero .term {
+        display: inline-block;
+        font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px;
+        background: var(--bg-soft);
+      }
+      .hero h1 {
+        font-size: clamp(2.1rem, 6vw, 3.2rem);
+        font-weight: 800; line-height: 1.08; margin: 16px 0 10px;
+      }
+      .hero h1 .grad { color: var(--coral); }
+      .hero p { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0; }
+
+      nav.tabs {
+        position: sticky; top: 0; z-index: 20;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(8px);
+        padding: 14px 0 12px; margin-top: 22px;
+        display: flex; flex-wrap: wrap; gap: 8px;
+      }
+      nav.tabs a {
+        text-decoration: none; color: var(--text);
+        background: var(--card); border: 1px solid var(--line);
+        padding: 8px 14px; border-radius: 999px;
+        font-weight: 700; font-size: 0.9rem;
+        display: inline-flex; align-items: center; min-height: 2.25rem;
+      }
+      nav.tabs a:hover { border-color: var(--purple); }
+      nav.tabs a .dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex: none; }
+
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 26px; }
+      .stat {
+        background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 16px; position: relative; overflow: hidden; box-shadow: var(--shadow);
+      }
+      .stat::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--pink)); }
+      .stat .num { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1.1; margin-top: 4px; }
+      .stat .lbl { color: var(--muted); font-size: 0.85rem; font-weight: 700; }
+
+      section.block { margin-top: 44px; scroll-margin-top: 84px; }
+      .block-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+      .block-head h2 { font-size: 1.45rem; font-weight: 700; }
+      .block-head .swatch { width: 26px; height: 6px; border-radius: 3px; background: var(--accent); align-self: center; }
+      .block-sub { color: var(--muted); margin: 0 0 18px; max-width: 620px; }
+
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+      .card + .card { margin-top: 14px; }
+
+      /* Today */
+      .today-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      .today-item {
+        display: flex; gap: 14px; align-items: center;
+        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px;
+      }
+      .today-item .time { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
+      .today-item .subj { font-weight: 800; }
+      .today-item .room { color: var(--muted); font-size: 0.88rem; }
+      .today-item .bar { width: 5px; align-self: stretch; border-radius: 3px; background: var(--accent); flex: none; }
+      .empty-note { color: var(--muted); margin: 0; }
+
+      /* Timetable */
+      .tt-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+      .tt-day { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; min-height: 120px; box-shadow: var(--shadow); }
+      .tt-day.today { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal) inset; }
+      .tt-day h3 { font-size: 0.95rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+      .tt-day h3 .tag { font-size: 0.68rem; background: var(--teal); color: #ffffff; border-radius: 999px; padding: 2px 8px; font-weight: 800; letter-spacing: 0.04em; }
+      .tt-class { margin-top: 10px; background: var(--card-2); border-radius: 10px; padding: 9px 11px; font-size: 0.86rem; position: relative; }
+      .tt-class .t { color: var(--muted); font-size: 0.78rem; font-weight: 700; }
+      .tt-class .s { font-weight: 800; line-height: 1.3; }
+      .tt-class .r { color: var(--muted); font-size: 0.8rem; }
+      .tt-class .del { position: absolute; top: 4px; right: 4px; }
+      .tt-none { color: var(--muted); font-size: 0.85rem; margin-top: 10px; }
+
+      /* Forms */
+      form.add { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      form.add input, form.add select {
+        background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px;
+        padding: 8px 12px; min-height: 2.5rem;
+      }
+      form.add input { flex: 1 1 160px; }
+      form.add input[type="date"], form.add input[type="time"] { flex: 0 1 auto; }
+      form.add select { flex: 0 1 auto; }
+      .btn {
+        background: var(--teal); color: #ffffff; border: none; cursor: pointer;
+        font-weight: 800; border-radius: 10px; padding: 8px 18px; min-height: 2.5rem;
+      }
+      .btn:hover { filter: brightness(1.08); }
+      .btn-ghost {
+        background: transparent; border: 1px solid var(--line); color: var(--text);
+        border-radius: 10px; padding: 8px 16px; cursor: pointer; font-weight: 700; min-height: 2.5rem;
+      }
+      .btn-ghost:hover { border-color: var(--purple); }
+      .del {
+        background: none; border: none; color: var(--muted); cursor: pointer;
+        width: 2.25rem; height: 2.25rem; border-radius: 8px; font-size: 1rem; line-height: 1;
+        display: inline-flex; align-items: center; justify-content: center; flex: none;
+      }
+      .del:hover { color: var(--pink); background: rgba(255,122,102,0.14); }
+
+      /* Assignments */
+      .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+      .filters button {
+        background: var(--card-2); border: 1px solid var(--line); color: var(--text);
+        border-radius: 999px; padding: 6px 14px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
+      }
+      .filters button[aria-pressed="true"] { background: var(--text); color: #FFFBF4; border-color: var(--text); }
+      .task-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      .task {
+        display: flex; align-items: center; gap: 12px;
+        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 10px 16px;
+      }
+      .task label { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; min-height: 2.25rem; min-width: 0; }
+      .task input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--green); flex: none; cursor: pointer; }
+      .task .main { min-width: 0; }
+      .task .title { font-weight: 800; }
+      .task.done .title { text-decoration: line-through; color: var(--muted); }
+      .task .meta { color: var(--muted); font-size: 0.85rem; }
+      .pill { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+      .pill.high { background: rgba(255,122,102,0.18); color: #C7432E; }
+      .pill.med { background: rgba(233,169,59,0.22); color: #8F6210; }
+      .pill.low { background: rgba(21,154,140,0.14); color: #0E7A6E; }
+      .pill.overdue { background: var(--coral); color: #ffffff; }
+
+      /* Exams */
+      .exam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .exam { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+      .exam::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
+      .exam .days { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 2rem; font-weight: 700; line-height: 1; margin: 6px 0 2px; }
+      .exam .days small { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+      .exam .subj { font-weight: 800; font-size: 1.05rem; }
+      .exam .when { color: var(--muted); font-size: 0.88rem; }
+      .exam .del { position: absolute; top: 8px; right: 8px; }
+
+      /* Timer */
+      .timer-wrap { display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: center; }
+      .ring-box { position: relative; width: 220px; height: 220px; margin: 0 auto; }
+      .ring-box svg { transform: rotate(-90deg); display: block; }
+      .ring-bg { stroke: var(--line); }
+      .ring-fg { stroke: url(#ringGrad); stroke-linecap: round; transition: stroke-dashoffset 0.4s linear; }
+      .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      .ring-center .clock { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 2.6rem; font-weight: 700; line-height: 1; }
+      .ring-center .state { color: var(--muted); font-weight: 800; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+      .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+      .presets button {
+        background: var(--card-2); border: 1px solid var(--line); color: var(--text);
+        border-radius: 10px; padding: 8px 16px; cursor: pointer; font-weight: 800;
+      }
+      .presets button[aria-pressed="true"] { border-color: var(--blue); background: rgba(21,154,140,0.12); }
+      .timer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+      .sessions { color: var(--muted); margin-top: 16px; }
+      .sessions strong { color: var(--text); }
+
+      /* Grades */
+      .gpa-banner { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
+      .gpa-banner .gpa { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 2.6rem; font-weight: 800; line-height: 1; }
+      .gpa-banner .gpa-lbl { color: var(--muted); font-weight: 700; }
+      .grade-rows { display: grid; gap: 10px; }
+      .grade-row {
+        display: flex; align-items: center; gap: 12px;
+        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 10px 16px;
+      }
+      .grade-row .subj { font-weight: 800; flex: 1; min-width: 0; }
+      .grade-row .cr { color: var(--muted); font-size: 0.88rem; white-space: nowrap; }
+      .grade-badge {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 1.05rem;
+        width: 46px; height: 46px; border-radius: 12px; flex: none;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: rgba(21,154,140,0.13); color: var(--teal-deep);
+      }
+
+      /* Reading */
+      .book-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      .book {
+        display: flex; align-items: center; gap: 14px;
+        background: var(--card-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 12px 12px 16px;
+      }
+      .book .info { flex: 1; min-width: 0; }
+      .book .t { font-weight: 800; }
+      .book .a { color: var(--muted); font-size: 0.88rem; }
+      .book .prog { height: 8px; background: var(--line); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+      .book .prog i { display: block; height: 100%; background: var(--teal); border-radius: 4px; }
+      .book .pct { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-weight: 600; white-space: nowrap; }
+      .book .prog { cursor: pointer; }
+      .book .pct { cursor: pointer; background: none; border: 1px solid transparent; border-radius: 8px; padding: 4px 6px; color: inherit; }
+      .book .pct:hover { border-color: var(--line); }
+      .book .pct-input { width: 64px; background: var(--bg-soft); border: 1px solid var(--blue); border-radius: 8px; padding: 4px 6px; font-weight: 700; text-align: center; }
+      .prog-controls { display: inline-flex; gap: 6px; align-items: center; flex: none; }
+      .prog-btn { background: var(--card); border: 1px solid var(--line); color: var(--text); width: 2.25rem; height: 2.25rem; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 1.05rem; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
+      .prog-btn:hover { border-color: var(--purple); }
+      .prog-btn:disabled { opacity: 0.35; cursor: default; }
+      .book .done-tag { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--green); }
+
+      footer { margin-top: 56px; color: var(--muted); font-size: 0.9rem; text-align: center; }
+      footer .rainbow-bar { height: 4px; border-radius: 2px; margin-bottom: 18px; }
+
+      @media (max-width: 860px) {
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .tt-grid { grid-template-columns: 1fr 1fr; }
+        .exam-grid { grid-template-columns: 1fr 1fr; }
+        .timer-wrap { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 560px) {
+        .tt-grid, .exam-grid { grid-template-columns: 1fr; }
+        .wrap { padding: 0 14px 56px; }
+        .card { padding: 16px; }
+        .hero h1 { font-size: 2rem; }
+        .book { flex-wrap: wrap; }
+        .book .info { flex: 1 1 100%; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .ring-fg { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rainbow-bar" aria-hidden="true"></div>
+    <div class="wrap">
+
+      <header class="hero">
+        <span class="term">Fall 2026 · Semester Planner</span>
+        <h1>Student <span class="grad">Planner</span></h1>
+        <p>Classes, assignments, exams, study sessions and grades — everything for the semester in one place. Demo data for Alex is loaded so you can see how it works; delete anything and make it yours.</p>
+      </header>
+
+      <nav class="tabs" aria-label="Planner sections">
+        <a href="#today"><span class="dot" style="background:var(--yellow)"></span>Today</a>
+        <a href="#timetable"><span class="dot" style="background:var(--pink)"></span>Timetable</a>
+        <a href="#assignments"><span class="dot" style="background:var(--orange)"></span>Assignments</a>
+        <a href="#exams"><span class="dot" style="background:var(--purple)"></span>Exams</a>
+        <a href="#timer"><span class="dot" style="background:var(--blue)"></span>Study Timer</a>
+        <a href="#grades"><span class="dot" style="background:var(--green)"></span>Grades</a>
+        <a href="#reading"><span class="dot" style="background:var(--pink)"></span>Reading List</a>
+      </nav>
+
+      <div class="stats" role="group" aria-label="Semester at a glance">
+        <div class="stat" style="--accent:var(--pink)"><div class="lbl">Classes this week</div><div class="num" id="statClasses">0</div></div>
+        <div class="stat" style="--accent:var(--orange)"><div class="lbl">Assignments to do</div><div class="num" id="statAssign">0</div></div>
+        <div class="stat" style="--accent:var(--purple)"><div class="lbl">Exams coming up</div><div class="num" id="statExams">0</div></div>
+        <div class="stat" style="--accent:var(--green)"><div class="lbl">Current GPA</div><div class="num" id="statGpa">–</div></div>
+      </div>
+
+      <!-- TODAY -->
+      <section class="block" id="today" style="--accent:var(--yellow)">
+        <div class="block-head"><span class="swatch"></span><h2>Today</h2></div>
+        <p class="block-sub" id="todaySub">Your classes for today.</p>
+        <div class="card">
+          <ul class="today-list" id="todayList"></ul>
+          <p class="empty-note" id="todayEmpty" hidden>No classes scheduled today. A good day to get ahead on assignments.</p>
+        </div>
+      </section>
+
+      <!-- TIMETABLE -->
+      <section class="block" id="timetable" style="--accent:var(--pink)">
+        <div class="block-head"><span class="swatch"></span><h2>Class Timetable</h2></div>
+        <p class="block-sub">Your weekly schedule, Monday to Friday. Add a class with the form under the grid.</p>
+        <div class="tt-grid" id="ttGrid"></div>
+        <form class="add card" id="classForm" style="margin-top:14px">
+          <select id="cfDay" aria-label="Day">
+            <option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option>
+            <option value="3">Thursday</option><option value="4">Friday</option>
+          </select>
+          <input type="time" id="cfTime" value="09:00" aria-label="Start time" required />
+          <input type="text" id="cfSubject" placeholder="Subject (e.g. Biology)" aria-label="Subject" required />
+          <input type="text" id="cfRoom" placeholder="Room (e.g. Lab 2)" aria-label="Room" />
+          <button class="btn" type="submit">Add class</button>
+        </form>
+      </section>
+
+      <!-- ASSIGNMENTS -->
+      <section class="block" id="assignments" style="--accent:var(--orange)">
+        <div class="block-head"><span class="swatch"></span><h2>Assignments</h2></div>
+        <p class="block-sub">Everything you need to hand in, sorted by due date. Tick one off when it is submitted.</p>
+        <div class="card">
+          <div class="filters" role="group" aria-label="Filter assignments">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="todo" aria-pressed="false">To do</button>
+            <button type="button" data-filter="done" aria-pressed="false">Done</button>
+          </div>
+          <ul class="task-list" id="taskList"></ul>
+          <p class="empty-note" id="taskEmpty" hidden>Nothing here. Add an assignment below.</p>
+          <form class="add" id="taskForm">
+            <input type="text" id="tfTitle" placeholder="Assignment (e.g. Essay draft)" aria-label="Assignment title" required />
+            <input type="text" id="tfSubject" placeholder="Subject" aria-label="Subject" required />
+            <input type="date" id="tfDue" aria-label="Due date" required />
+            <select id="tfPriority" aria-label="Priority">
+              <option value="high">High priority</option>
+              <option value="med" selected>Medium priority</option>
+              <option value="low">Low priority</option>
+            </select>
+            <button class="btn" type="submit">Add assignment</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- EXAMS -->
+      <section class="block" id="exams" style="--accent:var(--purple)">
+        <div class="block-head"><span class="swatch"></span><h2>Exams</h2></div>
+        <p class="block-sub">Countdown to every exam, so revision can start on time — not the night before.</p>
+        <div class="exam-grid" id="examGrid"></div>
+        <form class="add card" id="examForm" style="margin-top:14px">
+          <input type="text" id="efSubject" placeholder="Subject (e.g. Mathematics)" aria-label="Subject" required />
+          <input type="date" id="efDate" aria-label="Exam date" required />
+          <input type="text" id="efRoom" placeholder="Room / hall (optional)" aria-label="Room" />
+          <button class="btn" type="submit">Add exam</button>
+        </form>
+      </section>
+
+      <!-- STUDY TIMER -->
+      <section class="block" id="timer" style="--accent:var(--blue)">
+        <div class="block-head"><span class="swatch"></span><h2>Study Timer</h2></div>
+        <p class="block-sub">Pick a session length, press start, and study until the ring runs out. Short, regular sessions beat one long cram.</p>
+        <div class="card">
+          <div class="timer-wrap">
+            <div class="ring-box">
+              <svg width="220" height="220" viewBox="0 0 220 220" aria-hidden="true">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#159A8C" /><stop offset="25%" stop-color="#2FAE9E" />
+                    <stop offset="50%" stop-color="#7AC7B8" /><stop offset="70%" stop-color="#FFB59E" />
+                    <stop offset="88%" stop-color="#FF8F7A" /><stop offset="100%" stop-color="#FF7A66" />
+                  </linearGradient>
+                </defs>
+                <circle class="ring-bg" cx="110" cy="110" r="98" fill="none" stroke-width="12" />
+                <circle class="ring-fg" id="ringFg" cx="110" cy="110" r="98" fill="none" stroke-width="12" />
+              </svg>
+              <div class="ring-center">
+                <div class="clock" id="clock">25:00</div>
+                <div class="state" id="timerState">Ready</div>
+              </div>
+            </div>
+            <div>
+              <div class="presets" role="group" aria-label="Session length">
+                <button type="button" data-mins="15" aria-pressed="false">15 min</button>
+                <button type="button" data-mins="25" aria-pressed="true">25 min</button>
+                <button type="button" data-mins="45" aria-pressed="false">45 min</button>
+                <button type="button" data-mins="60" aria-pressed="false">60 min</button>
+              </div>
+              <div class="timer-actions">
+                <button class="btn" type="button" id="timerToggle">Start study session</button>
+                <button class="btn-ghost" type="button" id="timerReset">Reset</button>
+              </div>
+              <p class="sessions">Sessions completed this visit: <strong id="sessionCount">0</strong></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GRADES -->
+      <section class="block" id="grades" style="--accent:var(--green)">
+        <div class="block-head"><span class="swatch"></span><h2>Grades Tracker</h2></div>
+        <p class="block-sub">Your grade in each subject, with your GPA worked out automatically on a 4.0 scale.</p>
+        <div class="card">
+          <div class="gpa-banner">
+            <div>
+              <div class="gpa" id="gpaBig">–</div>
+              <div class="gpa-lbl">Grade Point Average</div>
+            </div>
+            <p class="empty-note" id="gpaNote" style="max-width:420px"></p>
+          </div>
+          <div class="grade-rows" id="gradeRows"></div>
+          <p class="empty-note" id="gradeEmpty" hidden>No subjects yet. Add your first grade below.</p>
+          <form class="add" id="gradeForm">
+            <input type="text" id="gfSubject" placeholder="Subject (e.g. English)" aria-label="Subject" required />
+            <select id="gfGrade" aria-label="Grade">
+              <option value="A">A</option><option value="A-">A-</option><option value="B+">B+</option>
+              <option value="B" selected>B</option><option value="B-">B-</option><option value="C+">C+</option>
+              <option value="C">C</option><option value="C-">C-</option><option value="D">D</option><option value="F">F</option>
+            </select>
+            <select id="gfCredits" aria-label="Credits">
+              <option value="1">1 credit</option><option value="2">2 credits</option>
+              <option value="3" selected>3 credits</option><option value="4">4 credits</option>
+            </select>
+            <button class="btn" type="submit">Add subject</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- READING LIST -->
+      <section class="block" id="reading" style="--accent:var(--pink)">
+        <div class="block-head"><span class="swatch"></span><h2>Reading List</h2></div>
+        <p class="block-sub">Set books and extra reading for the semester, with how far through each one you are. Click the progress bar or the % — or use the − / + buttons — to update your progress any time.</p>
+        <div class="card">
+          <ul class="book-list" id="bookList"></ul>
+          <p class="empty-note" id="bookEmpty" hidden>Your reading list is empty. Add a book below.</p>
+          <form class="add" id="bookForm">
+            <input type="text" id="bfTitle" placeholder="Book title" aria-label="Book title" required />
+            <input type="text" id="bfAuthor" placeholder="Author" aria-label="Author" />
+            <input type="number" id="bfProgress" min="0" max="100" value="" placeholder="0" aria-label="Percent read" style="flex:0 1 110px" />
+            <button class="btn" type="submit">Add book</button>
+          </form>
+        </div>
+      </section>
+
+      <footer>
+        <div class="rainbow-bar" aria-hidden="true"></div>
+        Student Planner · Fall 2026 — plan the week, hand things in on time, and watch the GPA climb.<br />Made by <strong style="color:var(--text)">Pixelora</strong>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+        var $ = function (id) { return document.getElementById(id); };
+        function esc(s) {
+          return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+          });
+        }
+        var DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        var ACCENTS = ["var(--pink)", "var(--blue)", "var(--green)", "var(--orange)", "var(--purple)", "var(--yellow)"];
+        function accentFor(name) {
+          var h = 0; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+          return ACCENTS[h % ACCENTS.length];
+        }
+        function todayISO() {
+          var d = new Date();
+          return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+        }
+        function fmtDate(iso) {
+          var d = new Date(iso + "T00:00:00");
+          return d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+        }
+        function daysUntil(iso) {
+          var a = new Date(todayISO() + "T00:00:00"), b = new Date(iso + "T00:00:00");
+          return Math.round((b - a) / 86400000);
+        }
+
+        /* ---------- Data (persisted in localStorage; demo seeds first run only) ---------- */
+        var classes = [
+          { day: 0, time: "09:00", subject: "Mathematics", room: "Room 204" },
+          { day: 0, time: "11:00", subject: "English Literature", room: "Room 118" },
+          { day: 1, time: "10:00", subject: "Biology", room: "Lab 2" },
+          { day: 1, time: "13:00", subject: "History", room: "Room 310" },
+          { day: 2, time: "09:00", subject: "Mathematics", room: "Room 204" },
+          { day: 2, time: "12:00", subject: "Computer Science", room: "IT Suite" },
+          { day: 3, time: "10:00", subject: "Biology", room: "Lab 2" },
+          { day: 3, time: "14:00", subject: "Art & Design", room: "Studio B" },
+          { day: 4, time: "09:00", subject: "English Literature", room: "Room 118" },
+          { day: 4, time: "11:00", subject: "History", room: "Room 310" }
+        ];
+        var tasks = [
+          { title: "Algebra problem set 8", subject: "Mathematics", due: "2026-11-13", priority: "high", done: false },
+          { title: "Essay: themes in Pride and Prejudice", subject: "English Literature", due: "2026-11-16", priority: "high", done: false },
+          { title: "Lab report — photosynthesis", subject: "Biology", due: "2026-11-18", priority: "med", done: false },
+          { title: "Python worksheet 5", subject: "Computer Science", due: "2026-11-12", priority: "med", done: false },
+          { title: "Source analysis handout", subject: "History", due: "2026-11-10", priority: "low", done: true }
+        ];
+        var exams = [
+          { subject: "Mathematics", date: "2026-11-27", room: "Main Hall" },
+          { subject: "Biology", date: "2026-12-03", room: "Lab Block" },
+          { subject: "English Literature", date: "2026-12-08", room: "Main Hall" }
+        ];
+        var GRADE_POINTS = { "A": 4.0, "A-": 3.7, "B+": 3.3, "B": 3.0, "B-": 2.7, "C+": 2.3, "C": 2.0, "C-": 1.7, "D": 1.0, "F": 0.0 };
+        var grades = [
+          { subject: "Mathematics", grade: "A-", credits: 4 },
+          { subject: "English Literature", grade: "B+", credits: 3 },
+          { subject: "Biology", grade: "A", credits: 4 },
+          { subject: "History", grade: "B", credits: 3 },
+          { subject: "Computer Science", grade: "A-", credits: 3 }
+        ];
+        var books = [
+          { title: "Pride and Prejudice", author: "Jane Austen", progress: 64 },
+          { title: "Biology: Concepts & Connections", author: "Campbell et al.", progress: 38 },
+          { title: "A Brief History of Time", author: "Stephen Hawking", progress: 100 }
+        ];
+
+        /* ---------- Persistence (localStorage) ---------- */
+        var STORAGE_KEY = "pixelora-student-planner-v1";
+        var timerMinsPref = 25;
+        function normalizeGrade(g) { return String(g == null ? "" : g).replace(/\u2212/g, "-"); }
+        function save() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+              classes: classes, tasks: tasks, exams: exams, grades: grades, books: books,
+              timerMins: (typeof totalSecs === "number" && totalSecs) ? Math.round(totalSecs / 60) : timerMinsPref
+            }));
+          } catch (e) { /* storage unavailable — planner still works in-memory */ }
+        }
+        (function loadSaved() {
+          var raw = null;
+          try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { raw = null; }
+          if (raw == null) return; // first run: keep demo seed above
+          try {
+            var d = JSON.parse(raw);
+            if (!d || typeof d !== "object") return;
+            if (Array.isArray(d.classes)) classes = d.classes;
+            if (Array.isArray(d.tasks)) tasks = d.tasks;
+            if (Array.isArray(d.exams)) exams = d.exams;
+            if (Array.isArray(d.grades)) grades = d.grades.map(function (g) {
+              return { subject: g.subject, grade: normalizeGrade(g.grade), credits: Number(g.credits) || 0 };
+            }).filter(function (g) { return GRADE_POINTS.hasOwnProperty(g.grade); });
+            if (Array.isArray(d.books)) books = d.books.map(function (b) {
+              return { title: b.title, author: b.author || "", progress: Math.max(0, Math.min(100, Number(b.progress) || 0)) };
+            });
+            if ([15, 25, 45, 60].indexOf(Number(d.timerMins)) >= 0) timerMinsPref = Number(d.timerMins);
+          } catch (e) { /* corrupted save — fall back to demo seed */ }
+        })();
+
+        /* ---------- Stats ---------- */
+        function calcGPA() {
+          var pts = 0, cr = 0;
+          grades.forEach(function (g) { pts += GRADE_POINTS[g.grade] * g.credits; cr += g.credits; });
+          return cr ? pts / cr : null;
+        }
+        function renderStats() {
+          $("statClasses").textContent = classes.length;
+          $("statAssign").textContent = tasks.filter(function (t) { return !t.done; }).length;
+          $("statExams").textContent = exams.filter(function (e) { return daysUntil(e.date) >= 0; }).length;
+          var gpa = calcGPA();
+          $("statGpa").textContent = gpa == null ? "–" : gpa.toFixed(2);
+        }
+
+        /* ---------- Today ---------- */
+        function renderToday() {
+          var now = new Date();
+          var dow = now.getDay(); // 0 Sun .. 6 Sat
+          var dayIdx = dow - 1; // Mon = 0
+          $("todaySub").textContent = now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }) +
+            (dayIdx >= 0 && dayIdx <= 4 ? " — here is your schedule." : " — no weekday classes today.");
+          var list = $("todayList");
+          var todays = (dayIdx >= 0 && dayIdx <= 4) ? classes.filter(function (c) { return c.day === dayIdx; }) : [];
+          todays.sort(function (a, b) { return a.time < b.time ? -1 : 1; });
+          list.innerHTML = todays.map(function (c) {
+            return '<li class="today-item" style="--accent:' + accentFor(c.subject) + '">' +
+              '<span class="bar"></span><span class="time">' + esc(c.time) + '</span>' +
+              '<span><span class="subj">' + esc(c.subject) + '</span><br><span class="room">' + esc(c.room || "—") + '</span></span></li>';
+          }).join("");
+          $("todayEmpty").hidden = todays.length > 0;
+        }
+
+        /* ---------- Timetable ---------- */
+        function renderTimetable() {
+          var dayIdx = new Date().getDay() - 1;
+          var grid = $("ttGrid");
+          grid.innerHTML = DAY_NAMES.map(function (name, d) {
+            var dayClasses = classes.map(function (c, i) { return { c: c, i: i }; })
+              .filter(function (x) { return x.c.day === d; })
+              .sort(function (a, b) { return a.c.time < b.c.time ? -1 : 1; });
+            var inner = dayClasses.length ? dayClasses.map(function (x) {
+              return '<div class="tt-class"><div class="t">' + esc(x.c.time) + '</div>' +
+                '<div class="s">' + esc(x.c.subject) + '</div>' +
+                (x.c.room ? '<div class="r">' + esc(x.c.room) + '</div>' : '') +
+                '<button class="del" type="button" data-del-class="' + x.i + '" aria-label="Remove ' + esc(x.c.subject) + ' class">✕</button></div>';
+            }).join("") : '<p class="tt-none">No classes</p>';
+            return '<div class="tt-day' + (d === dayIdx ? " today" : "") + '"><h3>' + name +
+              (d === dayIdx ? '<span class="tag">TODAY</span>' : "") + '</h3>' + inner + '</div>';
+          }).join("");
+        }
+        $("ttGrid").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-del-class]");
+          if (!btn) return;
+          classes.splice(Number(btn.getAttribute("data-del-class")), 1);
+          save(); renderTimetable(); renderToday(); renderStats();
+        });
+        $("classForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var subject = $("cfSubject").value.trim();
+          if (!subject) return;
+          classes.push({ day: Number($("cfDay").value), time: $("cfTime").value || "09:00", subject: subject, room: $("cfRoom").value.trim() });
+          $("classForm").reset(); $("cfDay").value = "0"; $("cfTime").value = "09:00"; $("cfSubject").value = ""; $("cfRoom").value = "";
+          save(); renderTimetable(); renderToday(); renderStats();
+        });
+
+        /* ---------- Assignments ---------- */
+        var filter = "all";
+        document.querySelectorAll(".filters button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            filter = b.getAttribute("data-filter");
+            document.querySelectorAll(".filters button").forEach(function (x) {
+              x.setAttribute("aria-pressed", x === b ? "true" : "false");
+            });
+            renderTasks();
+          });
+        });
+        function renderTasks() {
+          var sorted = tasks.map(function (t, i) { return { t: t, i: i }; })
+            .sort(function (a, b) { return a.t.due < b.t.due ? -1 : a.t.due > b.t.due ? 1 : 0; });
+          var shown = sorted.filter(function (x) {
+            return filter === "all" || (filter === "done" ? x.t.done : !x.t.done);
+          });
+          $("taskList").innerHTML = shown.map(function (x) {
+            var t = x.t, overdue = !t.done && daysUntil(t.due) < 0;
+            var pill = overdue ? '<span class="pill overdue">Overdue</span>'
+              : '<span class="pill ' + t.priority + '">' + (t.priority === "med" ? "Medium" : t.priority) + '</span>';
+            return '<li class="task' + (t.done ? " done" : "") + '">' +
+              '<label><input type="checkbox" data-task="' + x.i + '"' + (t.done ? " checked" : "") + '>' +
+              '<span class="main"><span class="title">' + esc(t.title) + '</span><br>' +
+              '<span class="meta">' + esc(t.subject) + ' · Due ' + fmtDate(t.due) + '</span></span></label>' +
+              pill + '<button class="del" type="button" data-del-task="' + x.i + '" aria-label="Delete ' + esc(t.title) + '">✕</button></li>';
+          }).join("");
+          $("taskEmpty").hidden = shown.length > 0;
+        }
+        $("taskList").addEventListener("change", function (e) {
+          var cb = e.target.closest("[data-task]");
+          if (!cb) return;
+          tasks[Number(cb.getAttribute("data-task"))].done = cb.checked;
+          save(); renderTasks(); renderStats();
+        });
+        $("taskList").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-del-task]");
+          if (!btn) return;
+          tasks.splice(Number(btn.getAttribute("data-del-task")), 1);
+          save(); renderTasks(); renderStats();
+        });
+        $("taskForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var title = $("tfTitle").value.trim(), subject = $("tfSubject").value.trim(), due = $("tfDue").value;
+          if (!title || !subject || !due) return;
+          tasks.push({ title: title, subject: subject, due: due, priority: $("tfPriority").value, done: false });
+          $("taskForm").reset(); $("tfTitle").value = ""; $("tfSubject").value = ""; $("tfDue").value = todayISO(); $("tfPriority").value = "med";
+          save(); renderTasks(); renderStats();
+        });
+
+        /* ---------- Exams ---------- */
+        function renderExams() {
+          var sorted = exams.map(function (x, i) { return { x: x, i: i }; })
+            .sort(function (a, b) { return a.x.date < b.x.date ? -1 : 1; });
+          $("examGrid").innerHTML = sorted.map(function (o) {
+            var d = daysUntil(o.x.date);
+            var label = d < 0 ? "Done" : d === 0 ? "Today!" : d === 1 ? "1 <small>day left</small>" : d + " <small>days left</small>";
+            return '<div class="exam" style="--accent:' + accentFor(o.x.subject) + '">' +
+              '<button class="del" type="button" data-del-exam="' + o.i + '" aria-label="Remove ' + esc(o.x.subject) + ' exam">✕</button>' +
+              '<div class="subj">' + esc(o.x.subject) + '</div>' +
+              '<div class="days">' + label + '</div>' +
+              '<div class="when">' + fmtDate(o.x.date) + (o.x.room ? ' · ' + esc(o.x.room) : "") + '</div></div>';
+          }).join("") || '<p class="empty-note">No exams added yet.</p>';
+          renderStats();
+        }
+        $("examGrid").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-del-exam]");
+          if (!btn) return;
+          exams.splice(Number(btn.getAttribute("data-del-exam")), 1);
+          save(); renderExams();
+        });
+        $("examForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var subject = $("efSubject").value.trim(), date = $("efDate").value;
+          if (!subject || !date) return;
+          exams.push({ subject: subject, date: date, room: $("efRoom").value.trim() });
+          $("examForm").reset(); $("efSubject").value = ""; $("efRoom").value = ""; $("efDate").value = todayISO();
+          save(); renderExams();
+        });
+
+        /* ---------- Study timer ---------- */
+        var CIRC = 2 * Math.PI * 98;
+        var ring = $("ringFg");
+        ring.style.strokeDasharray = CIRC;
+        ring.style.strokeDashoffset = 0;
+        var totalSecs = timerMinsPref * 60, leftSecs = totalSecs, timerId = null, sessionsDone = 0;
+        document.querySelectorAll(".presets button").forEach(function (x) { x.setAttribute("aria-pressed", Number(x.getAttribute("data-mins")) === timerMinsPref ? "true" : "false"); });
+        function fmtClock(s) {
+          return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+        }
+        function paintTimer() {
+          $("clock").textContent = fmtClock(leftSecs);
+          ring.style.strokeDashoffset = totalSecs ? CIRC * (1 - leftSecs / totalSecs) : CIRC;
+        }
+        function setState(txt) { $("timerState").textContent = txt; }
+        function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+        function resetTimer() {
+          stopTimer(); leftSecs = totalSecs; paintTimer(); setState("Ready");
+          $("timerToggle").textContent = "Start study session";
+        }
+        document.querySelectorAll(".presets button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            document.querySelectorAll(".presets button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+            b.setAttribute("aria-pressed", "true");
+            totalSecs = Number(b.getAttribute("data-mins")) * 60;
+            timerMinsPref = Math.round(totalSecs / 60);
+            save();
+            resetTimer();
+          });
+        });
+        $("timerToggle").addEventListener("click", function () {
+          if (timerId) {
+            stopTimer(); setState("Paused"); $("timerToggle").textContent = "Resume";
+            return;
+          }
+          if (leftSecs <= 0) leftSecs = totalSecs;
+          setState("Studying");
+          $("timerToggle").textContent = "Pause";
+          timerId = setInterval(function () {
+            leftSecs--;
+            if (leftSecs <= 0) {
+              leftSecs = 0; paintTimer(); stopTimer();
+              sessionsDone++; $("sessionCount").textContent = sessionsDone;
+              setState("Session complete");
+              $("timerToggle").textContent = "Start another";
+              return;
+            }
+            paintTimer();
+          }, 1000);
+          paintTimer();
+        });
+        $("timerReset").addEventListener("click", resetTimer);
+        paintTimer();
+
+        /* ---------- Grades ---------- */
+        function renderGrades() {
+          var gpa = calcGPA();
+          $("gpaBig").textContent = gpa == null ? "–" : gpa.toFixed(2);
+          $("gpaNote").textContent = gpa == null ? "Add a subject to see your GPA."
+            : gpa >= 3.7 ? "Excellent — honours territory. Keep doing what you are doing."
+            : gpa >= 3.0 ? "Solid work. One grade up in any subject moves this noticeably."
+            : gpa >= 2.0 ? "Plenty of room to climb — focus revision on your lowest subject first."
+            : "Talk to your teachers early and build a revision plan — small steady gains add up.";
+          $("gradeRows").innerHTML = grades.map(function (g, i) {
+            return '<div class="grade-row"><span class="grade-badge">' + esc(g.grade) + '</span>' +
+              '<span class="subj">' + esc(g.subject) + '</span>' +
+              '<span class="cr">' + g.credits + (g.credits === 1 ? " credit" : " credits") + ' · ' + GRADE_POINTS[g.grade].toFixed(1) + ' pts</span>' +
+              '<button class="del" type="button" data-del-grade="' + i + '" aria-label="Remove ' + esc(g.subject) + '">✕</button></div>';
+          }).join("");
+          $("gradeEmpty").hidden = grades.length > 0;
+          renderStats();
+        }
+        $("gradeRows").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-del-grade]");
+          if (!btn) return;
+          grades.splice(Number(btn.getAttribute("data-del-grade")), 1);
+          save(); renderGrades();
+        });
+        $("gradeForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var subject = $("gfSubject").value.trim();
+          if (!subject) return;
+          grades.push({ subject: subject, grade: normalizeGrade($("gfGrade").value), credits: Number($("gfCredits").value) });
+          $("gradeForm").reset(); $("gfSubject").value = ""; $("gfGrade").value = "B"; $("gfCredits").value = "3";
+          save(); renderGrades();
+        });
+
+        /* ---------- Reading list ---------- */
+        function renderBooks() {
+          $("bookList").innerHTML = books.map(function (b, i) {
+            var pct = Math.max(0, Math.min(100, b.progress));
+            return '<li class="book"><div class="info"><span class="t">' + esc(b.title) + '</span>' +
+              (pct >= 100 ? ' <span class="done-tag">Finished</span>' : "") +
+              '<div class="a">' + esc(b.author || "—") + '</div>' +
+              '<div class="prog" data-prog-book="' + i + '" role="button" tabindex="0" title="Click to set progress" aria-label="Set progress for ' + esc(b.title) + '"><i style="width:' + pct + '%"></i></div></div>' +
+              '<span class="prog-controls">' +
+              '<button class="prog-btn" type="button" data-dec-book="' + i + '" aria-label="Decrease progress for ' + esc(b.title) + ' by 10 percent"' + (pct <= 0 ? " disabled" : "") + '>-</button>' +
+              '<button class="pct" type="button" data-edit-book="' + i + '" title="Click to edit percent read" aria-label="Edit percent read for ' + esc(b.title) + '">' + pct + '%</button>' +
+              '<button class="prog-btn" type="button" data-inc-book="' + i + '" aria-label="Increase progress for ' + esc(b.title) + ' by 10 percent"' + (pct >= 100 ? " disabled" : "") + '>+</button>' +
+              '</span>' +
+              '<button class="del" type="button" data-del-book="' + i + '" aria-label="Remove ' + esc(b.title) + '">✕</button></li>';
+          }).join("");
+          $("bookEmpty").hidden = books.length > 0;
+        }
+        function setBookProgress(i, pct) {
+          if (!books[i]) return;
+          books[i].progress = Math.max(0, Math.min(100, Math.round(pct) || 0));
+          save(); renderBooks();
+        }
+        function startEditBookPct(btn, i) {
+          if (!books[i] || btn.querySelector("input")) return;
+          var cur = Math.max(0, Math.min(100, books[i].progress));
+          btn.innerHTML = '<input class="pct-input" type="number" min="0" max="100" value="' + cur + '" aria-label="Percent read" />';
+          var input = btn.querySelector("input");
+          input.focus(); input.select();
+          var done = false;
+          function commit(saveIt) {
+            if (done) return; done = true;
+            if (saveIt) setBookProgress(i, Number(input.value));
+            else renderBooks();
+          }
+          input.addEventListener("blur", function () { commit(true); });
+          input.addEventListener("keydown", function (ev) {
+            if (ev.key === "Enter") { ev.preventDefault(); commit(true); }
+            else if (ev.key === "Escape") { ev.preventDefault(); commit(false); }
+          });
+          input.addEventListener("click", function (ev) { ev.stopPropagation(); });
+        }
+        $("bookList").addEventListener("click", function (e) {
+          var del = e.target.closest("[data-del-book]");
+          if (del) { books.splice(Number(del.getAttribute("data-del-book")), 1); save(); renderBooks(); return; }
+          var dec = e.target.closest("[data-dec-book]");
+          if (dec) { var di = Number(dec.getAttribute("data-dec-book")); setBookProgress(di, books[di].progress - 10); return; }
+          var inc = e.target.closest("[data-inc-book]");
+          if (inc) { var ii = Number(inc.getAttribute("data-inc-book")); setBookProgress(ii, books[ii].progress + 10); return; }
+          var prog = e.target.closest("[data-prog-book]");
+          if (prog) {
+            var pi = Number(prog.getAttribute("data-prog-book"));
+            var rect = prog.getBoundingClientRect();
+            if (rect.width > 0) setBookProgress(pi, (e.clientX - rect.left) / rect.width * 100);
+            return;
+          }
+          var pctBtn = e.target.closest("[data-edit-book]");
+          if (pctBtn) { startEditBookPct(pctBtn, Number(pctBtn.getAttribute("data-edit-book"))); }
+        });
+        $("bookList").addEventListener("keydown", function (e) {
+          var prog = e.target.closest("[data-prog-book]");
+          if (!prog) return;
+          var pi = Number(prog.getAttribute("data-prog-book"));
+          if (e.key === "ArrowRight" || e.key === "ArrowUp") { e.preventDefault(); setBookProgress(pi, books[pi].progress + 5); }
+          else if (e.key === "ArrowLeft" || e.key === "ArrowDown") { e.preventDefault(); setBookProgress(pi, books[pi].progress - 5); }
+        });
+        $("bookForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var title = $("bfTitle").value.trim();
+          if (!title) return;
+          books.push({ title: title, author: $("bfAuthor").value.trim(), progress: Math.max(0, Math.min(100, Number($("bfProgress").value) || 0)) });
+          $("bookForm").reset(); $("bfTitle").value = ""; $("bfAuthor").value = ""; $("bfProgress").value = "";
+          save(); renderBooks();
+        });
+
+        $("bfProgress").addEventListener("focus", function () { this.select(); });
+        $("bfProgress").addEventListener("click", function () { this.select(); });
+
+        /* Set sensible default due dates in forms */
+        $("tfDue").value = todayISO();
+        $("efDate").value = todayISO();
+
+        renderToday(); renderTimetable(); renderTasks(); renderExams(); renderGrades(); renderBooks(); renderStats();
+      })();
+    </script>
+  </body>
+</html>
